@@ -1,27 +1,50 @@
 site_name: Anand Gupta
+nav:
+  - Home: index.md
+  - About: about.md
+  - Blog:
+      - Blog Homepage: blog/index.md
+      # - Project 2: projects/project2.md
 theme:
   name: material
   features:
+    - announce.dismiss
     - navigation.tabs
     - navigation.sections
+    - navigation.footer
     - toc.integrate
+    - toc.follow
     - navigation.top
-    - search.suggest
     - search.highlight
+    - search.share
+    - search.suggest
     - content.tabs.link
-    - content.code.annotation
+    # - content.code.annotation
     - content.code.copy
   language: en
   palette:
-    - scheme: default
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
       toggle:
-        icon: material/toggle-switch-off-outline 
+        icon: material/brightness-3 
         name: Switch to dark mode
-      primary: teal
-      accent: purple 
-    - scheme: slate 
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
       toggle:
-        icon: material/toggle-switch
-        name: Switch to light mode    
-      primary: teal
-      accent: limes
+        icon: material/brightness-7
+        name: Switch to light mode
+extra:
+  homepage: https://anandgupta1202.github.io/
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/anandgupta1202
+    # - icon: fontawesome/brands/docker
+    #   link: https://hub.docker.com/r/squidfunk/mkdocs-material/
+    # - icon: fontawesome/brands/python
+    #   link: https://pypi.org/project/mkdocs-material/
+    # - icon: fontawesome/brands/mastodon
+    #   link: https://fosstodon.org/@squidfunk
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/AnandGupta1202
