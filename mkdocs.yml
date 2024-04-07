@@ -1,15 +1,44 @@
 site_name: Anand Gupta
 nav:
-  - Home: index.md
+  # - Home: index.md
   - About: about.md
   - Blog:
       - Blog Homepage: blog/index.md
-      # - Project 2: projects/project2.md
+plugins:
+  - blog:
+      enabled: true
+      blog_dir: blog
+      blog_toc: true
+      post_dir: "{blog}/posts"
+      post_date_format: medium
+      post_url_format: "{date}/{slug}"
+      post_url_max_categories: 1
+      post_slugify_separator: "-"
+      post_excerpt_max_authors: 2
+      post_excerpt_max_categories: 5
+      post_excerpt_separator: <!-- more -->
+      post_readtime: false
+      archive: true
+      archive_name: Archive
+      archive_toc: false
+      categories: true
+      categories_name: Categories
+      categories_slugify_separator: "-"
+      categories_toc: false
+      authors: true
+      authors_file: "{blog}/.authors.yml"
+      draft: false
+  - search:
+      enabled: true
+      lang: 
+      
 theme:
   name: material
   features:
     - announce.dismiss
+    - navigation.path
     - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.sections
     - navigation.footer
     - toc.integrate
@@ -19,7 +48,6 @@ theme:
     - search.share
     - search.suggest
     - content.tabs.link
-    # - content.code.annotation
     - content.code.copy
   language: en
   palette:
@@ -35,16 +63,36 @@ theme:
       toggle:
         icon: material/brightness-7
         name: Switch to light mode
+markdown_extensions:
+  - abbr
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.snippets:
+      auto_append:
+        - includes/abbreviations.md
 extra:
   homepage: https://anandgupta1202.github.io/
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/anandgupta1202
-    # - icon: fontawesome/brands/docker
-    #   link: https://hub.docker.com/r/squidfunk/mkdocs-material/
-    # - icon: fontawesome/brands/python
-    #   link: https://pypi.org/project/mkdocs-material/
-    # - icon: fontawesome/brands/mastodon
-    #   link: https://fosstodon.org/@squidfunk
     - icon: fontawesome/brands/twitter
       link: https://twitter.com/AnandGupta1202
+extra_css:
+  - stylesheets/extra.css
+watch:
+  - includes
