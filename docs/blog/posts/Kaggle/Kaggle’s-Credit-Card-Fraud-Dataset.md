@@ -15,7 +15,7 @@ slug: credit-card-data-kaggle-eda
 This article describes how I used different machine learning models to try to predict credit card fraud and see which works best.
 <!-- more -->
 <figure markdown="span">
-  ![creditcard image from unsplash](../../assets/images/kagglecredit070424/creditcard.jpg){ width=auto height=auto}
+  ![creditcard image from unsplash](images/creditcard.jpg){ width=auto height=auto}
   <figcaption>creditcard image from unsplash</figcaption>
 </figure>
 
@@ -35,19 +35,21 @@ After importing the necessary packages and reading the data into a pandas datafr
 
 
 <figure markdown="span">
-  ![credit card data info](../../assets/images/kagglecredit070424/4o530hbq.png){ width=auto height=auto }
+  ![credit card data info](images/4o530hbq.png){ width=auto height=auto }
   <figcaption>credit card data info</figcaption>
 </figure>
 
-With the info() method we can see :
+With the ```info()``` method we can see :
 
-all the columns
-all data types
-whether any columns contain null or not as its values
-We can also see by the numbers written beside the names that there are no missing data in any of the columns.
+- all the columns
+- all data types
+- whether any columns contain null or not as its values
+We can also see by the numbers written beside the names that there are *no missing data in any of the columns*.
 
 Next up we analyse the “time” column in the dataset.
 
-
+<!-- Declaring variables here -->
+[homepage]:../../../index.md
 !!! Note "Will update rest of the article soon"
-    [Back to homepage](../../index.md){ .md-button }
+    [Back to homepage][homepage]{ .md-button }
+

@@ -29,7 +29,9 @@ plugins:
       draft: false
   - search:
       enabled: true
-      lang:   
+      lang: en
+  - social
+    # cards_layout: default
 theme:
   name: material
   features:
