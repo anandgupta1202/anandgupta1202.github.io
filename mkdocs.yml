@@ -30,8 +30,9 @@ plugins:
   - search:
       enabled: true
       lang: en
-  - social
-    # cards_layout: default
+  - social:
+      cards: true
+      cards_dir: socialcards
 theme:
   name: material
   features:
