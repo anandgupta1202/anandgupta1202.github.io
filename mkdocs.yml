@@ -1,7 +1,6 @@
 site_name: Anand Gupta
 nav:
-  # - Home: index.md
-  - About: about.md
+  - Home: index.md
   - Blog:
       - Blog Homepage: blog/index.md
 plugins:
@@ -30,25 +29,24 @@ plugins:
       draft: false
   - search:
       enabled: true
-      lang: 
-      
+      lang:   
 theme:
   name: material
   features:
     - announce.dismiss
+    - content.code.copy
+    - content.tabs.link
+    - navigation.footer
     - navigation.path
+    - navigation.sections
     - navigation.tabs
     - navigation.tabs.sticky
-    - navigation.sections
-    - navigation.footer
-    - toc.integrate
-    - toc.follow
     - navigation.top
     - search.highlight
     - search.share
     - search.suggest
-    - content.tabs.link
-    - content.code.copy
+    - toc.follow
+    - toc.integrate
   language: en
   palette:
     # Palette toggle for light mode
@@ -86,7 +84,7 @@ markdown_extensions:
       auto_append:
         - includes/abbreviations.md
 extra:
-  homepage: https://anandgupta1202.github.io/
+  # homepage: https://anandgupta1202.github.io/
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/anandgupta1202
