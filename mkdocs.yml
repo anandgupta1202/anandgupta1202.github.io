@@ -1,7 +1,7 @@
 site_name: Anand Gupta
 site_url: https://anandgupta1202.github.io/
 nav:
-  - Home: index.md
+  - Home: readme.md
   - Blog:
       - Blog Homepage: blog/index.md
 plugins:

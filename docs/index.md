@@ -11,7 +11,19 @@ draft: false
 slug: home
 ---
 
-This section is about me
+# Hi there 👋, I'm Anand Gupta!
+
+I'm a Data Scientist based in Bengaluru, India, with a passion for leveraging data to solve complex problems and drive decision-making. I specialize in machine learning, data analysis, and visualization.
+
+## 🚀 About Me
+
+- 🎓 I hold a degree in [Your Degree] from [Your University].
+- 🌱 I’m currently working on [Your Current Project or Goal].
+- 👯 I’m looking to collaborate on [Your Collaboration Goal].
+- 🤔 I’m interested in [Your Interests].
+- 💬 Ask me about [Your Expertise].
+- 📫 How to reach me: [Your Contact Information].
+
 
 ## Recent blog posts
 
