@@ -1,7 +1,7 @@
 site_name: Anand Gupta
 site_url: https://anandgupta1202.github.io/
 nav:
-  - Home: readme.md
+  - Home: index.md
   - Blog:
       - Blog Homepage: blog/index.md
 plugins:
@@ -38,6 +38,8 @@ theme:
   name: material
   features:
     - announce.dismiss
+    - toc.follow
+    - toc.integrate
     - content.code.copy
     - content.tabs.link
     - navigation.footer
@@ -49,8 +51,6 @@ theme:
     - search.highlight
     - search.share
     - search.suggest
-    - toc.follow
-    - toc.integrate
   language: en
   palette:
     # Palette toggle for light mode
@@ -70,7 +70,15 @@ markdown_extensions:
   - attr_list
   - md_in_html
   - admonition
+  - def_list
   - pymdownx.details
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.tasklist:
+      custom_checkbox: true
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
@@ -79,11 +87,6 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
-  - pymdownx.critic
-  - pymdownx.caret
-  - pymdownx.keys
-  - pymdownx.mark
-  - pymdownx.tilde
   - pymdownx.snippets:
       auto_append:
         - includes/abbreviations.md
