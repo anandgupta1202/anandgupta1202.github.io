@@ -24,47 +24,32 @@ Few of the domains I have worked in:
   - Recommendation systems
 
 ## 💻 Tech Stack:
-### Main:
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=white) ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white) ![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white) ![Keras](https://img.shields.io/badge/Keras-%23D00000.svg?style=for-the-badge&logo=Keras&logoColor=white) ![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white) ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white) 
+<div class="grid cards" markdown>
 
-### Others
- ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi) ![GithubPages](https://img.shields.io/badge/github%20pages-121013?style=for-the-badge&logo=github&logoColor=white) ![Anaconda](https://img.shields.io/badge/Anaconda-%2344A833.svg?style=for-the-badge&logo=anaconda&logoColor=white) 
+-   Main Stack
+
+    ---
+    ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=white) ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white) ![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white) ![Keras](https://img.shields.io/badge/Keras-%23D00000.svg?style=for-the-badge&logo=Keras&logoColor=white) ![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white) ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
+
+    [:octicons-arrow-right-24: Getting started](#)
+
+-   Others
+
+    ---
+
+    ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi) ![GithubPages](https://img.shields.io/badge/github%20pages-121013?style=for-the-badge&logo=github&logoColor=white) ![Anaconda](https://img.shields.io/badge/Anaconda-%2344A833.svg?style=for-the-badge&logo=anaconda&logoColor=white)
+</div>
 
 
 ## Recent blog posts
 
 <div class="grid cards" markdown>
 
--   :material-clock-fast:{ .lg .middle .text-primary} __Set up in 5 minutes__
+-   :material-clock-fast:{ .lg .middle .text-primary} Kaggle's EDA
 
     ---
-    Install `mkdocs-material` with [`pip`](#) and get up
-    and running in minutes
+    EDA on Kaggle's credit card dataset
 
-    [:octicons-arrow-right-24: Getting started](#)
-
--   :fontawesome-brands-markdown:{ .lg .middle } __It's just Markdown__
-
-    ---
-
-    Focus on your content and generate a responsive and searchable static site
-
-    [:octicons-arrow-right-24: Reference](#)
-
--   :material-format-font:{ .lg .middle } __Made to measure__
-
-    ---
-
-    Change the colors, fonts, language, icons, logo and more with a few lines
-
-    [:octicons-arrow-right-24: Customization](#)
-
-<!-- -   :material-scale-balance:{ .lg .middle } __Open Source, MIT__
-
-    ---
-
-    Material for MkDocs is licensed under MIT and available on [GitHub]
-
-    [:octicons-arrow-right-24: License](#) -->
+    [:octicons-arrow-right-24: Read more...](blog/posts/Kaggle/Kaggle’s-Credit-Card-Fraud-Dataset.md)
 
 </div>
