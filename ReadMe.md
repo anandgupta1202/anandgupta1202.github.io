@@ -1,18 +1,12 @@
-# 💫 About Me:
-Data Curious | AI Lead @ Wysa | Inquisitive Human
-
-<div style="text-align: center;">
-    [![Portfolio](https://img.shields.io/badge/Visit-My%20portfolio-blue?style=for-the-badge&logo=materialformkdocs&logoColor=white)](https://anandgupta1202.github.io)
-</div>
-
 <p align="center">
   <a href="https://anandgupta1202.github.io">
     <img src="https://img.shields.io/badge/Visit-My%20portfolio-blue?style=for-the-badge&logo=materialformkdocs&logoColor=white" alt="Portfolio">
-  </a>
+  </a><br>
 </p>
+Data Curious | AI Lead @ [Wysa](https://www.wysa.com/) | Inquisitive Human
 
 ## 🌐 Socials:
-[![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?logo=Instagram&logoColor=white)](https://instagram.com/habitcodes) [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/anand-gupta-1202) [![Medium](https://img.shields.io/badge/Medium-12100E?logo=medium&logoColor=white)](https://medium.com/@anand.gupta1202) [![X](https://img.shields.io/badge/X-black.svg?logo=X&logoColor=white)](https://x.com/AnandGupta1202) 
+[![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?logo=Instagram&logoColor=white)](https://instagram.com/habitcodes) [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/anand-gupta-1202) [![Medium](https://img.shields.io/badge/Medium-12100E?logo=medium&logoColor=white)](https://medium.com/@anand.gupta1202) [![X](https://img.shields.io/badge/X-black.svg?logo=X&logoColor=white)](https://x.com/AnandGupta1202) [![Gmail](https://img.shields.io/badge/Gmail-D14836?logo=gmail&logoColor=white)](mailto:reachout@anand.aleeas.com)
 
 # 📊 GitHub Stats:
 ![](https://github-readme-stats.vercel.app/api?username=anandgupta1202&theme=blue-green&hide_border=false&include_all_commits=true&count_private=true)
