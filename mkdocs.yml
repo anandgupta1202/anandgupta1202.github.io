@@ -42,6 +42,7 @@ theme:
     - toc.integrate
     - content.code.copy
     - content.tabs.link
+    - content.tooltips
     - navigation.footer
     - navigation.path
     - navigation.sections
