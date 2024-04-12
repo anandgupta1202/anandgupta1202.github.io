@@ -91,12 +91,14 @@ markdown_extensions:
       auto_append:
         - includes/abbreviations.md
 extra:
-  # homepage: https://anandgupta1202.github.io/
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/anandgupta1202
     - icon: fontawesome/brands/twitter
       link: https://twitter.com/AnandGupta1202
+  analytics:
+    provider: google
+    property: G-BE3TCP0T2D
 extra_css:
   - stylesheets/extra.css
 watch:
