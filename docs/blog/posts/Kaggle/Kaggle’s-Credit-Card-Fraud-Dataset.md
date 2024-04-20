@@ -15,7 +15,7 @@ slug: credit-card-data-kaggle-eda
 This article describes how I used different machine learning models to try to predict credit card fraud and see which works best.
 <!-- more -->
 <figure markdown="span">
-  ![creditcard image from unsplash](images/creditcard.jpg){ width=auto height=auto}
+  ![creditcard image from unsplash](../../images/creditcard.jpg){ width=auto height=auto}
   <figcaption>creditcard image from unsplash</figcaption>
 </figure>
 
@@ -35,7 +35,7 @@ After importing the necessary packages and reading the data into a pandas datafr
 
 
 <figure markdown="span">
-  ![credit card data info](images/4o530hbq.png){ width=auto height=auto }
+  ![credit card data info](../../images/4o530hbq.png){ width=auto height=auto }
   <figcaption>credit card data info</figcaption>
 </figure>
 
