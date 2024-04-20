@@ -50,6 +50,6 @@ Few of the domains I have worked in:
     ---
     EDA on Kaggle's credit card dataset
 
-    [:octicons-arrow-right-24: Read more...](blog/posts/Kaggle/Kaggle’s-Credit-Card-Fraud-Dataset.md)
+    [:octicons-arrow-right-24: Read more...](blog/posts/Kaggle’s-Credit-Card-Fraud-Dataset.md)
 
 </div>
