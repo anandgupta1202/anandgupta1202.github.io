@@ -2,8 +2,8 @@ site_name: Anand Gupta
 site_url: https://anandgupta1202.github.io/
 nav:
   - Home: index.md
-  - Blog:
-      - Blog Homepage: blog/index.md
+  - Blog: 
+    - blog/index.md
 plugins:
   - blog:
       enabled: true
@@ -18,13 +18,13 @@ plugins:
       post_excerpt_max_categories: 5
       post_excerpt_separator: <!-- more -->
       post_readtime: false
-      archive: true
+      archive: false
       archive_name: Archive
       archive_toc: false
       categories: true
-      categories_name: Categories
+      categories_name: Type of Blog
       categories_slugify_separator: "-"
-      categories_toc: false
+      categories_toc: true
       authors: true
       authors_file: "{blog}/.authors.yml"
       draft: false
@@ -34,6 +34,8 @@ plugins:
   - social:
       cards: true
       cards_dir: socialcards
+  - tags:
+      enabled: true
 theme:
   name: material
   features:
@@ -78,6 +80,8 @@ markdown_extensions:
   - pymdownx.keys
   - pymdownx.mark
   - pymdownx.tilde
+  - toc:
+      permalink: true
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.superfences:
