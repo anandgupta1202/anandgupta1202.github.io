@@ -14,7 +14,7 @@ slug: indian-roads-object-detection
 categories: 
   - Technical
 tags:
-  - something
+  - Computer Vision
 ---
 Let's see how we can use Google’s Object Detection Model on Indian roads.
 

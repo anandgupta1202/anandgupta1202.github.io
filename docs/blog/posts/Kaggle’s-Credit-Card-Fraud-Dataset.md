@@ -14,7 +14,8 @@ slug: credit-card-data-kaggle-eda
 categories: 
   - Technical
 tags:
-  - something
+  - Kaggle
+  - Analysis
 ---
 This article describes how I used different machine learning models to try to predict credit card fraud and see which works best.
 <!-- more -->
