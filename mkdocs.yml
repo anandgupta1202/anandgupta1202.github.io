@@ -22,7 +22,7 @@ plugins:
       archive_name: Archive
       archive_toc: false
       categories: true
-      categories_name: Type of Blog
+      categories_name: Type of Blogs
       categories_slugify_separator: "-"
       categories_toc: true
       authors: true
