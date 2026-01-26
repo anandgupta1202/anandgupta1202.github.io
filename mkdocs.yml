@@ -98,10 +98,16 @@ markdown_extensions:
         - includes/abbreviations.md
 extra:
   social:
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/anand-gupta-1202
     - icon: fontawesome/brands/github
       link: https://github.com/anandgupta1202
-    - icon: fontawesome/brands/twitter
-      link: https://twitter.com/AnandGupta1202
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/AnandGupta1202
+    - icon: fontawesome/brands/medium
+      link: https://medium.com/@anand.gupta1202
+    - icon: fontawesome/solid/envelope
+      link: mailto:reachout@anand.aleeas.com
   analytics:
     provider: google
     property: G-BE3TCP0T2D
