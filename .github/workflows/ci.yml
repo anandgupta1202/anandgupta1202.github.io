@@ -1,28 +1,63 @@
-name: ci 
+name: Deploy Quartz site to GitHub Pages
+
 on:
   push:
     branches:
       - main
+
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
-      - name: Configure Git Credentials
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Clone Quartz
+        run: git clone --depth 1 --branch v4 https://github.com/jackyzha0/quartz.git /tmp/quartz
+
+      - name: Copy content and config into Quartz
         run: |
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-      - uses: actions/setup-python@v5
+          rm -rf /tmp/quartz/content/*
+          cp -r content/* /tmp/quartz/content/
+          cp quartz.config.ts /tmp/quartz/quartz.config.ts
+          cp quartz.layout.ts /tmp/quartz/quartz.layout.ts
+
+      - name: Install Dependencies
+        run: npm ci
+        working-directory: /tmp/quartz
+
+      - name: Build Quartz
+        run: npx quartz build
+        working-directory: /tmp/quartz
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          python-version: 3.11
-      - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV 
-      - uses: actions/cache@v4
-        with:
-          key: mkdocs-material-${{ env.cache_id }}
-          path: .cache
-          restore-keys: |
-            mkdocs-material-
-      - run: pip install -r requirements.txt
-      - run: mkdocs gh-deploy --force
+          path: /tmp/quartz/public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

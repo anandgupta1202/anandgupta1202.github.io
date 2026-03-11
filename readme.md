@@ -1,22 +1,60 @@
+# anandgupta1202.github.io
+
+Personal website and blog built with [Quartz](https://quartz.jzhao.xyz/) — a fast, batteries-included static site generator that transforms Obsidian markdown into a published website.
+
 <p align="center">
   <a href="https://anandgupta1202.github.io">
-    <img src="https://img.shields.io/badge/Visit-My%20portfolio-blue?style=for-the-badge&logo=materialformkdocs&logoColor=white" alt="Portfolio">
-  </a><br>
-  <!-- Data Curious | AI Lead @ <a href="https://www.wysa.com">Wysa</a> | Inquisitive Human -->
+    <img src="https://img.shields.io/badge/Visit-My%20site-blue?style=for-the-badge" alt="Website">
+  </a>
 </p>
-<!-- 
-[![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?logo=Instagram&logoColor=white)](https://instagram.com/habitcodes) [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/anand-gupta-1202) [![Medium](https://img.shields.io/badge/Medium-12100E?logo=medium&logoColor=white)](https://medium.com/@anand.gupta1202) [![X](https://img.shields.io/badge/X-black.svg?logo=X&logoColor=white)](https://x.com/AnandGupta1202) [![Gmail](https://img.shields.io/badge/Gmail-D14836?logo=gmail&logoColor=white)](mailto:reachout@anand.aleeas.com) -->
 
-<!-- # 📊 GitHub Stats:
-![](https://github-readme-stats.vercel.app/api?username=anandgupta1202&theme=blue-green&hide_border=false&include_all_commits=true&count_private=true)
-![](https://github-readme-streak-stats.herokuapp.com/?user=anandgupta1202&theme=blue-green&hide_border=false)
-![](https://github-readme-stats.vercel.app/api/top-langs/?username=anandgupta1202&theme=blue-green&hide_border=false&include_all_commits=true&count_private=true&layout=compact)
+## Writing Content
 
-<a><img src="https://github-readme-stats.vercel.app/api?username=anandgupta1202&theme=blue-green&hide_border=false&include_all_commits=true&count_private=true" width="auto" />
-</a>
-<a><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=anandgupta1202&theme=blue-green&hide_border=false&include_all_commits=true&count_private=true&layout=compact" width="auto" />
-</a>
+Blog posts and notes are written as standard markdown files in the `content/` directory, fully compatible with [Obsidian](https://obsidian.md/).
 
-[![](https://visitcount.itsvg.in/api?id=anandgupta1202&icon=0&color=0)](https://visitcount.itsvg.in) -->
+- **Home page:** `content/index.md`
+- **Blog posts:** `content/blog/`
+- **Images:** `content/blog/images/`
 
-<!-- Proudly created with GPRM ( https://gprm.itsvg.in ) -->
+### Frontmatter Format
+
+Each markdown file uses YAML frontmatter:
+
+```yaml
+---
+title: My Blog Post
+date: 2024-01-15
+tags:
+  - tag1
+  - tag2
+draft: false
+description: A short description of the post.
+---
+```
+
+## Local Development
+
+To preview the site locally:
+
+1. Clone [Quartz](https://github.com/jackyzha0/quartz):
+   ```bash
+   git clone --depth 1 --branch v4 https://github.com/jackyzha0/quartz.git /tmp/quartz
+   ```
+
+2. Copy content and config:
+   ```bash
+   cp -r content/* /tmp/quartz/content/
+   cp quartz.config.ts /tmp/quartz/quartz.config.ts
+   cp quartz.layout.ts /tmp/quartz/quartz.layout.ts
+   ```
+
+3. Install dependencies and serve:
+   ```bash
+   cd /tmp/quartz
+   npm ci
+   npx quartz build --serve
+   ```
+
+## Deployment
+
+The site is automatically built and deployed to GitHub Pages via GitHub Actions on every push to `main`.
