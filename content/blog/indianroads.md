@@ -83,7 +83,7 @@ But here are some of ***my*** pointers/learnings that I followed while working o
 
 - During the part where you need to install Protobuf, be careful not to install the version 3.5 or more. This will save you a lot of time by utilising the multi-file selection wildcard (i.e *.proto)
 
-- While converting the .xml to .csv and from .csv to .record I copy-pasted the scripts and executed them using Jupyter Notebooks. I was easy to edit and provide easy debug on the code lines. Also, I could change the way the script was talking inputs based on my new folder structure.
+- While converting the .xml to .csv and from .csv to .record I copy-pasted the scripts and executed them using Jupyter Notebooks. It was easy to edit and provide easy debug on the code lines. Also, I could change the way the script was taking inputs based on my new folder structure.
 
 - While executing the custom training of your model be sure to lower the training batch number based on your machine's capabilities. Otherwise it may lead to errors and training will stop.
 
