@@ -1,0 +1,38 @@
+---
+import type { WritingEntry } from "../lib/writing";
+import { formatDate, getWritingUrl } from "../lib/writing";
+import SourceLogo from "./SourceLogo.astro";
+
+interface Props {
+  entry: WritingEntry;
+}
+
+const { entry } = Astro.props;
+const url = getWritingUrl(entry);
+const isExternal = Boolean(entry.data.externalUrl);
+---
+
+<a
+  class="writing-card"
+  href={url}
+  target={isExternal ? "_blank" : undefined}
+  rel={isExternal ? "noreferrer" : undefined}
+>
+  <time class="writing-date" datetime={entry.data.pubDate.toISOString()}>
+    {formatDate(entry.data.pubDate)}
+  </time>
+  <div>
+    <h3 class="writing-title">{entry.data.title}</h3>
+    <p class="writing-description">{entry.data.description}</p>
+    {
+      entry.data.tags.length > 0 && (
+        <div class="tag-row" aria-label="Tags">
+          {entry.data.tags.map((tag) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+      )
+    }
+  </div>
+  <SourceLogo source={entry.data.source} />
+</a>

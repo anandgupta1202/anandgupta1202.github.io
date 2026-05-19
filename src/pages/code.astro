@@ -1,0 +1,50 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import profile from "../data/profile.json";
+---
+
+<BaseLayout
+  title="Code"
+  description="Projects and code experiments by Anand Gupta."
+  path="/code/"
+>
+  <Header />
+  <main class="page">
+    <section aria-labelledby="code-title">
+      <p class="section-label">Code</p>
+      <h1 id="code-title" class="section-title">Projects and experiments</h1>
+      <p class="section-copy">
+        Open source work, experiments, and useful scratches. Edit these cards from the profile config.
+      </p>
+    </section>
+
+    <section class="section" aria-label="Project list">
+      <div class="project-grid">
+        {profile.projects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="stack-title">
+      <p class="section-label">Stack</p>
+      <h2 id="stack-title" class="section-title">Tools I reach for</h2>
+      <div class="tech-grid" style="margin-top: 24px;">
+        {
+          profile.techGroups.map((group) => (
+            <div class="tech-card">
+              <h3 class="tech-name">{group.label}</h3>
+              <div class="tag-row">
+                {group.items.map((item) => (
+                  <span class="tag">{item}</span>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

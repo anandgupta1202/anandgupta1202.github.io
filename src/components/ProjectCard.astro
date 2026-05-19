@@ -1,0 +1,24 @@
+---
+interface Project {
+  name: string;
+  description: string;
+  url: string;
+  platform: string;
+  tags: string[];
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<a class="project-card" href={project.url} target="_blank" rel="noreferrer">
+  <span class="project-platform">{project.platform}</span>
+  <h3 class="project-name">{project.name}</h3>
+  <p class="project-description">{project.description}</p>
+  <div class="tag-row" aria-label="Project tags">
+    {project.tags.map((tag) => <span class="tag">{tag}</span>)}
+  </div>
+</a>

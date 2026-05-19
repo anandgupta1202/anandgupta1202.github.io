@@ -1,0 +1,98 @@
+{
+  "name": "Anand Gupta",
+  "headline": "AI systems with product judgment.",
+  "headlinePhrases": [
+    "AI systems with product judgment",
+    "Data products with human context",
+    "Writing that tests the work"
+  ],
+  "intro": "I build LLM systems for clinical and real-time conversational contexts, with a bias toward products that are useful, measurable, and humane.",
+  "bio": "I work on conversational AI and data products where the messy human context matters as much as the model. My interests sit between what systems know, what models say, and what people actually need from the product in front of them.",
+  "availability": "Open to thoughtful conversations, writing collaborations, and AI product discussions.",
+  "email": "reachout@anand.aleeas.com",
+  "cta": {
+    "primaryLabel": "Contact me",
+    "secondaryLabel": "Read writing"
+  },
+  "identityRows": [
+    {
+      "label": "Current focus",
+      "value": "Low-latency conversational AI"
+    },
+    {
+      "label": "Domains",
+      "value": "LLMs, data products, recommendation systems"
+    }
+  ],
+  "socialLinks": [
+    {
+      "label": "LinkedIn",
+      "url": "https://linkedin.com/in/anand-gupta-1202",
+      "enabled": true
+    },
+    {
+      "label": "GitHub",
+      "url": "https://github.com/anandgupta1202",
+      "enabled": true
+    },
+    {
+      "label": "Medium",
+      "url": "https://medium.com/@anand.gupta1202",
+      "enabled": false
+    },
+    {
+      "label": "X",
+      "url": "https://x.com/AnandGupta1202",
+      "enabled": false
+    },
+    {
+      "label": "Instagram",
+      "url": "https://instagram.com/habitcodes",
+      "enabled": false
+    }
+  ],
+  "techGroups": [
+    {
+      "label": "Main stack",
+      "items": ["Python", "PyTorch", "TensorFlow", "scikit-learn", "FastAPI", "Pandas", "NumPy"]
+    },
+    {
+      "label": "Also",
+      "items": ["AWS", "Flask", "GitHub Pages", "Anaconda", "Data visualization"]
+    }
+  ],
+  "projects": [
+    {
+      "name": "AI-slop-detector",
+      "description": "Detect AI-generated slop in text, because confident output is not always useful output.",
+      "url": "https://github.com/anandgupta1202/AI-slop-detector",
+      "platform": "GitHub",
+      "tags": ["AI", "NLP", "Python"],
+      "pinned": true
+    },
+    {
+      "name": "opensre",
+      "description": "Open source toolkit for building AI SRE agents and operational workflows.",
+      "url": "https://github.com/anandgupta1202/opensre",
+      "platform": "GitHub",
+      "tags": ["Python", "Agents", "SRE"],
+      "pinned": true
+    },
+    {
+      "name": "portkey-ai-gateway",
+      "description": "AI gateway concepts around routing, fallbacks, and observability for LLM providers.",
+      "url": "https://github.com/anandgupta1202/portkey-ai-gateway",
+      "platform": "GitHub",
+      "tags": ["TypeScript", "LLM", "Infrastructure"],
+      "pinned": false
+    },
+    {
+      "name": "anandgupta1202.github.io",
+      "description": "Personal site and writing home for experiments, notes, and portfolio work.",
+      "url": "https://github.com/anandgupta1202/anandgupta1202.github.io",
+      "platform": "GitHub",
+      "tags": ["Web", "Writing", "Astro"],
+      "pinned": false
+    }
+  ]
+}

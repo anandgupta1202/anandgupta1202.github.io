@@ -1,0 +1,48 @@
+---
+import "../styles/global.css";
+import ShaderBackground from "../components/ShaderBackground.astro";
+import profile from "../data/profile.json";
+
+interface Props {
+  title?: string;
+  description?: string;
+  path?: string;
+  image?: string;
+}
+
+const {
+  title,
+  description = profile.intro,
+  path = Astro.url.pathname,
+  image
+} = Astro.props;
+
+const site = Astro.site ?? new URL("https://www.anandgupta.net");
+const siteTitle = title ? `${title} | ${profile.name}` : `${profile.name} | Portfolio`;
+const canonical = new URL(path, site).toString();
+const ogImage = image ? new URL(image, site).toString() : undefined;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{siteTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
+    <meta name="theme-color" content="#0c0c0e" />
+  </head>
+  <body>
+    <ShaderBackground />
+    <div class="site-shell">
+      <slot />
+    </div>
+  </body>
+</html>

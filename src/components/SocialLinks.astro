@@ -1,0 +1,13 @@
+---
+import profile from "../data/profile.json";
+---
+
+<div class="social-row" aria-label="Social links">
+  {
+    profile.socialLinks.filter((link) => link.enabled !== false).map((link) => (
+      <a class="social-link" href={link.url} target="_blank" rel="noreferrer">
+        {link.label}
+      </a>
+    ))
+  }
+</div>
