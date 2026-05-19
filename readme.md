@@ -23,3 +23,12 @@ For full instructions, see [`docs/content-guide.md`](docs/content-guide.md).
 ```sh
 npm run build
 ```
+
+## Deployment
+
+This site is built as a static Astro app and deployed through Cloudflare.
+
+- Build command: `npm run build`
+- Deploy command: `npm run deploy:cloudflare`
+- Output directory: `dist`
+- Root directory: `/`
