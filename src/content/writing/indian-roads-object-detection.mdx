@@ -8,9 +8,14 @@ source: "Medium"
 pinned: true
 featuredRank: 1
 draft: false
-heroImage: "/blog/images/indianroadsunsplash.jpg"
+heroImage: "./indianroadsunsplash.jpg"
 heroAlt: "Panning photo of a road by Atharva Tulsi on Unsplash"
 ---
+
+import { Image } from "astro:assets";
+import roadImageOne from "./indianroadannotatedpic1.png";
+import roadImageTwo from "./indianroadannotatedpic2.png";
+import roadImageThree from "./indianroadannotatedpic3.png";
 
 Let's see how we can use Google's Object Detection Model on Indian roads.
 
@@ -100,9 +105,9 @@ After following the tutorial to implement a ssd_inception_v2_coco model I had to
 Here are some of the output images:
 
 <div class="image-grid">
-  <img src="/blog/images/indianroadannotatedpic1.png" alt="Object detection sample on Indian road image 1" />
-  <img src="/blog/images/indianroadannotatedpic2.png" alt="Object detection sample on Indian road image 2" />
-  <img src="/blog/images/indianroadannotatedpic3.png" alt="Object detection sample on Indian road image 3" />
+  <Image src={roadImageOne} alt="Object detection sample on Indian road image 1" widths={[360, 540, 720]} sizes="(min-width: 760px) 220px, 100vw" />
+  <Image src={roadImageTwo} alt="Object detection sample on Indian road image 2" widths={[360, 540, 720]} sizes="(min-width: 760px) 220px, 100vw" />
+  <Image src={roadImageThree} alt="Object detection sample on Indian road image 3" widths={[360, 540, 720]} sizes="(min-width: 760px) 220px, 100vw" />
 </div>
 
 As we can see that the model does a pretty good job of detecting relevant objects on the input images with a moderate confidence rate.

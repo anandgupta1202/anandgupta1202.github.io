@@ -8,9 +8,12 @@ source: "Medium"
 pinned: true
 featuredRank: 2
 draft: false
-heroImage: "/blog/images/creditcard.jpg"
+heroImage: "./creditcard.jpg"
 heroAlt: "Credit card image from Unsplash"
 ---
+
+import { Image } from "astro:assets";
+import creditCardInfo from "./4o530hbq.png";
 
 This article describes how I used different machine learning models to try to predict credit card fraud and see which works best.
 
@@ -34,7 +37,7 @@ The data for credit card fraud case study can be found [with this link](https://
 After importing the necessary packages and reading the data into a pandas dataframe, we start analyzing it.
 
 <figure>
-  <img src="/blog/images/4o530hbq.png" alt="Credit card data info" />
+  <Image src={creditCardInfo} alt="Credit card data info" widths={[720, 1080]} sizes="(min-width: 760px) 760px, 100vw" />
   <figcaption>Credit card data info</figcaption>
 </figure>
 

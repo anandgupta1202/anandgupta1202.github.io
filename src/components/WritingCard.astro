@@ -17,6 +17,7 @@ const isExternal = Boolean(entry.data.externalUrl);
   href={url}
   target={isExternal ? "_blank" : undefined}
   rel={isExternal ? "noreferrer" : undefined}
+  data-astro-prefetch={isExternal ? undefined : true}
   data-reveal
 >
   <time class="writing-date" datetime={entry.data.pubDate.toISOString()}>

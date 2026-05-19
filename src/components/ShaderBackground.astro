@@ -1,14 +1,23 @@
-<div class="shader-backdrop" aria-hidden="true">
+<div class="shader-backdrop" aria-hidden="true" transition:persist>
   <canvas data-shader-gradient></canvas>
   <div class="shader-veil"></div>
   <div class="shader-grain"></div>
 </div>
 
 <script is:inline>
-  const canvas = document.querySelector("[data-shader-gradient]");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let stopShader = () => {};
 
-  if (canvas instanceof HTMLCanvasElement) {
+  const initShader = () => {
+    stopShader();
+
+    const canvas = document.querySelector("[data-shader-gradient]");
+
+    if (!(canvas instanceof HTMLCanvasElement)) {
+      stopShader = () => {};
+      return;
+    }
+
     const ctx = canvas.getContext("2d", { alpha: true });
     const colors = ["#73bfc4", "#ff810a", "#8da0ce"];
     let width = 0;
@@ -89,12 +98,28 @@
       }
     };
 
-    resize();
-    start();
-    window.addEventListener("resize", () => {
+    const handleResize = () => {
       resize();
       start();
-    });
+    };
+
+    resize();
+    start();
+    window.addEventListener("resize", handleResize);
     reduceMotion.addEventListener("change", start);
+
+    stopShader = () => {
+      window.cancelAnimationFrame(raf);
+      window.removeEventListener("resize", handleResize);
+      reduceMotion.removeEventListener("change", start);
+    };
+  };
+
+  if (!document.documentElement.dataset.shaderBound) {
+    document.documentElement.dataset.shaderBound = "true";
+    document.addEventListener("astro:page-load", initShader);
+    document.addEventListener("astro:before-preparation", () => stopShader());
   }
+
+  initShader();
 </script>
