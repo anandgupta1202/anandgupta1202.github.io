@@ -2,7 +2,7 @@ import { defineCollection, z } from "astro:content";
 
 const writing = defineCollection({
   type: "content",
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string(),
     pubDate: z.coerce.date(),
@@ -13,7 +13,7 @@ const writing = defineCollection({
     pinned: z.boolean().default(false),
     featuredRank: z.number().int().optional(),
     draft: z.boolean().default(false),
-    heroImage: z.string().optional(),
+    heroImage: image().optional(),
     heroAlt: z.string().optional()
   })
 });

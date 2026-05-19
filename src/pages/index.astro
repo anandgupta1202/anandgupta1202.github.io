@@ -35,7 +35,7 @@ const pinnedProjects = profile.projects.filter((project) => project.pinned).slic
         <p class="hero-bio">{profile.bio}</p>
         <div class="action-row">
           <a class="button primary" href={`mailto:${profile.email}`}>{profile.cta.primaryLabel}</a>
-          <a class="button" href="/blog/">{profile.cta.secondaryLabel}</a>
+          <a class="button" href="/blog/" data-astro-prefetch>{profile.cta.secondaryLabel}</a>
         </div>
       </div>
 
@@ -62,7 +62,7 @@ const pinnedProjects = profile.projects.filter((project) => project.pinned).slic
             A few trails into how I think: data that tells on itself, models in messy settings, and the product questions around both.
           </p>
         </div>
-        <a class="button" href="/blog/">All blogs</a>
+        <a class="button" href="/blog/" data-astro-prefetch>All blogs</a>
       </div>
       <div class="writing-list">
         {featuredWriting.map((entry) => <WritingCard entry={entry} />)}
@@ -78,7 +78,7 @@ const pinnedProjects = profile.projects.filter((project) => project.pinned).slic
             Repos and experiments that make the work more concrete than a paragraph can.
           </p>
         </div>
-        <a class="button" href="/code/">All code</a>
+        <a class="button" href="/code/" data-astro-prefetch>All code</a>
       </div>
       <div class="project-grid">
         {pinnedProjects.map((project) => <ProjectCard project={project} />)}
@@ -87,9 +87,18 @@ const pinnedProjects = profile.projects.filter((project) => project.pinned).slic
   </main>
   <Footer />
   <script>
-    const typewriter = document.querySelector("[data-typewriter]");
+    let teardownTypewriter = () => {};
 
-    if (typewriter instanceof HTMLElement) {
+    const initTypewriter = () => {
+      teardownTypewriter();
+
+      const typewriter = document.querySelector("[data-typewriter]");
+
+      if (!(typewriter instanceof HTMLElement)) {
+        teardownTypewriter = () => {};
+        return;
+      }
+
       const phrases = JSON.parse(typewriter.dataset.phrases ?? "[]") as string[];
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
       let phraseIndex = 0;
@@ -142,9 +151,21 @@ const pinnedProjects = profile.projects.filter((project) => project.pinned).slic
         }
       };
 
+      teardownTypewriter = () => {
+        clearTick();
+        reduceMotion.removeEventListener("change", syncMotionPreference);
+      };
+
       reduceMotion.addEventListener("change", syncMotionPreference);
-      window.addEventListener("pagehide", clearTick);
       syncMotionPreference();
+    };
+
+    if (!document.documentElement.dataset.typewriterBound) {
+      document.documentElement.dataset.typewriterBound = "true";
+      document.addEventListener("astro:page-load", initTypewriter);
+      document.addEventListener("astro:before-preparation", () => teardownTypewriter());
     }
+
+    initTypewriter();
   </script>
 </BaseLayout>
