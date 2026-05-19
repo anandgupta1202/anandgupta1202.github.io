@@ -14,7 +14,7 @@ interface Props {
 const { project } = Astro.props;
 ---
 
-<a class="project-card" href={project.url} target="_blank" rel="noreferrer">
+<a class="project-card" href={project.url} target="_blank" rel="noreferrer" data-reveal>
   <span class="project-platform">{project.platform}</span>
   <h3 class="project-name">{project.name}</h3>
   <p class="project-description">{project.description}</p>

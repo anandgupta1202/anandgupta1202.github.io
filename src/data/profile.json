@@ -1,15 +1,16 @@
 {
   "name": "Anand Gupta",
-  "headline": "AI systems with product judgment.",
+  "headline": "Designing scalable intelligence systems",
   "headlinePhrases": [
-    "AI systems with product judgment",
-    "Data products with human context",
-    "Writing that tests the work"
+    "Designing scalable intelligence systems",
+    "Shipping reliable production AI",
+    "Building human-centered AI systems",
+    "Architecting systems that scale"
   ],
   "intro": "I build LLM systems for clinical and real-time conversational contexts, with a bias toward products that are useful, measurable, and humane.",
   "bio": "I work on conversational AI and data products where the messy human context matters as much as the model. My interests sit between what systems know, what models say, and what people actually need from the product in front of them.",
   "availability": "Open to thoughtful conversations, writing collaborations, and AI product discussions.",
-  "email": "reachout@anand.aleeas.com",
+  "email": "anand.gupta1202@gmail.com",
   "cta": {
     "primaryLabel": "Contact me",
     "secondaryLabel": "Read writing"

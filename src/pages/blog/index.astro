@@ -14,8 +14,8 @@ const writing = await getPublishedWriting();
   path="/blog/"
 >
   <Header />
-  <main class="page narrow">
-    <section aria-labelledby="blog-title">
+  <main id="main-content" class="page narrow" tabindex="-1">
+    <section aria-labelledby="blog-title" data-reveal="hero">
       <p class="section-label">All writing</p>
       <h1 id="blog-title" class="section-title">Blogs</h1>
       <p class="section-copy">
@@ -23,7 +23,7 @@ const writing = await getPublishedWriting();
       </p>
     </section>
 
-    <section class="section" aria-label="Blog list">
+    <section class="section" aria-label="Blog list" data-reveal>
       <div class="writing-list">
         {writing.map((entry) => <WritingCard entry={entry} />)}
       </div>

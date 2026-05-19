@@ -27,9 +27,9 @@ const { Content } = await render(entry);
   image={entry.data.heroImage}
 >
   <Header />
-  <main class="page narrow">
+  <main id="main-content" class="page narrow" tabindex="-1">
     <article>
-      <header class="article-header">
+      <header class="article-header" data-reveal="hero">
         <p class="meta-line">
           <time datetime={entry.data.pubDate.toISOString()}>{formatFullDate(entry.data.pubDate)}</time>
           <span aria-hidden="true"> / </span>
@@ -49,13 +49,13 @@ const { Content } = await render(entry);
         {
           entry.data.heroImage && (
             <figure class="article-hero">
-              <img src={entry.data.heroImage} alt={entry.data.heroAlt ?? ""} />
+              <img src={entry.data.heroImage} alt={entry.data.heroAlt ?? ""} decoding="async" />
               {entry.data.heroAlt && <figcaption>{entry.data.heroAlt}</figcaption>}
             </figure>
           )
         }
       </header>
-      <div class="prose">
+      <div class="prose" data-reveal>
         <Content />
       </div>
     </article>
