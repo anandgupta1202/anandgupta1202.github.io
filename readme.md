@@ -16,6 +16,8 @@ npm run dev
 - Add `externalUrl` to a writing entry when the card should link to Medium, Substack, or another site.
 - Leave `externalUrl` empty for a local page at `/blog/[slug]/`.
 
+For full instructions, see [`docs/content-guide.md`](docs/content-guide.md).
+
 ## Build
 
 ```sh
