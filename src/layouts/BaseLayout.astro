@@ -1,0 +1,96 @@
+---
+import "../styles/global.css";
+import ShaderBackground from "../components/ShaderBackground.astro";
+import profile from "../data/profile.json";
+
+interface Props {
+  title?: string;
+  description?: string;
+  path?: string;
+  image?: string;
+}
+
+const {
+  title,
+  description = profile.intro,
+  path = Astro.url.pathname,
+  image
+} = Astro.props;
+
+const site = Astro.site ?? new URL("https://www.anandgupta.net");
+const siteTitle = title ? `${title} | ${profile.name}` : `${profile.name} | Portfolio`;
+const canonical = new URL(path, site).toString();
+const ogImage = image ? new URL(image, site).toString() : undefined;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{siteTitle}</title>
+    <meta name="description" content={description} />
+    <script is:inline>
+      document.documentElement.classList.add("reveal-ready");
+    </script>
+     <link rel="preconnect" href="https://fonts.googleapis.com" />
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&display=swap"
+    />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
+    <meta name="theme-color" content="#0c0c0e" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <ShaderBackground />
+    <div class="site-shell">
+      <slot />
+    </div>
+    <script>
+      const revealItems = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+      const showAll = () => {
+        revealItems.forEach((item) => item.classList.add("is-visible"));
+      };
+
+      if (revealItems.length > 0) {
+        revealItems.forEach((item, index) => {
+          item.style.setProperty("--reveal-order", String(index % 5));
+        });
+
+        if (reduceMotion.matches || !("IntersectionObserver" in window)) {
+          showAll();
+        } else {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("is-visible");
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { rootMargin: "0px 0px -12% 0px", threshold: 0.12 }
+          );
+
+          revealItems.forEach((item) => observer.observe(item));
+          reduceMotion.addEventListener("change", () => {
+            if (reduceMotion.matches) {
+              observer.disconnect();
+              showAll();
+            }
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

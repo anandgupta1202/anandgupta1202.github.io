@@ -1,0 +1,42 @@
+---
+import profile from "../data/profile.json";
+
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/blog/", label: "Blogs" },
+  { href: "/code/", label: "Code" }
+];
+
+const currentPath = Astro.url.pathname;
+const socialLinks = profile.socialLinks.filter((link) => link.enabled !== false);
+---
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <nav class="nav" aria-label="Primary navigation">
+      {
+        navItems.map((item) => {
+          const isCurrent =
+            item.href === "/"
+              ? currentPath === "/"
+              : currentPath.startsWith(item.href);
+
+          return (
+            <a href={item.href} aria-current={isCurrent ? "page" : undefined}>
+              {item.label}
+            </a>
+          );
+        })
+      }
+    </nav>
+    <nav class="header-social" aria-label="Social links">
+      {
+        socialLinks.map((link) => (
+          <a class="social-link" href={link.url} target="_blank" rel="noreferrer">
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>

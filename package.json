@@ -1,0 +1,22 @@
+{
+  "name": "anandgupta-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro check && ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "deploy:cloudflare": "wrangler deploy",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/sitemap": "^3.2.1",
+    "astro": "^5.0.0",
+    "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "wrangler": "^4.93.0"
+  }
+}

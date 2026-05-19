@@ -1,0 +1,100 @@
+<div class="shader-backdrop" aria-hidden="true">
+  <canvas data-shader-gradient></canvas>
+  <div class="shader-veil"></div>
+  <div class="shader-grain"></div>
+</div>
+
+<script is:inline>
+  const canvas = document.querySelector("[data-shader-gradient]");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (canvas instanceof HTMLCanvasElement) {
+    const ctx = canvas.getContext("2d", { alpha: true });
+    const colors = ["#73bfc4", "#ff810a", "#8da0ce"];
+    let width = 0;
+    let height = 0;
+    let raf = 0;
+    let lastFrame = 0;
+
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    };
+
+    const blob = (x, y, radius, color, alpha) => {
+      if (!ctx) return;
+      const gradient = ctx.createRadialGradient(x, y, radius * 0.08, x, y, radius);
+      gradient.addColorStop(0, `${color}${Math.round(alpha * 255).toString(16).padStart(2, "0")}`);
+      gradient.addColorStop(0.52, `${color}${Math.round(alpha * 92).toString(16).padStart(2, "0")}`);
+      gradient.addColorStop(1, `${color}00`);
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+    };
+
+    const grain = (time) => {
+      if (!ctx) return;
+      const count = Math.floor((width * height) / 5600);
+      ctx.fillStyle = "rgba(255, 238, 214, 0.045)";
+      for (let i = 0; i < count; i += 1) {
+        const x = (Math.sin(i * 91.7 + time * 0.001) * 0.5 + 0.5) * width;
+        const y = (Math.cos(i * 41.3 + time * 0.0017) * 0.5 + 0.5) * height;
+        ctx.fillRect(x, y, 1, 1);
+      }
+    };
+
+    const draw = (time = 0) => {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = "oklch(12% 0.014 68)";
+      ctx.fillRect(0, 0, width, height);
+
+      const t = time * 0.0003;
+      const scale = Math.max(width, height);
+      const centerX = width * 0.56 + Math.sin(t * 0.9) * width * 0.08;
+      const centerY = height * 0.3 + Math.cos(t * 0.75) * height * 0.08;
+
+      ctx.globalCompositeOperation = "screen";
+      blob(centerX + Math.sin(t * 2.2) * 90, centerY, scale * 0.52, colors[1], 0.66);
+      blob(centerX - scale * 0.24 + Math.cos(t * 1.4) * 70, centerY + scale * 0.07, scale * 0.48, colors[0], 0.54);
+      blob(centerX + scale * 0.22 + Math.sin(t * 1.1) * 60, centerY - scale * 0.16, scale * 0.42, colors[2], 0.5);
+
+      ctx.globalCompositeOperation = "source-over";
+      const vignette = ctx.createRadialGradient(width * 0.52, height * 0.34, scale * 0.1, width * 0.52, height * 0.34, scale * 0.78);
+      vignette.addColorStop(0, "rgba(12, 10, 8, 0)");
+      vignette.addColorStop(0.62, "rgba(12, 10, 8, 0.38)");
+      vignette.addColorStop(1, "rgba(12, 10, 8, 0.82)");
+      ctx.fillStyle = vignette;
+      ctx.fillRect(0, 0, width, height);
+
+      grain(time);
+    };
+
+    const loop = (time) => {
+      if (time - lastFrame > 100) {
+        lastFrame = time;
+        draw(time);
+      }
+      raf = window.requestAnimationFrame(loop);
+    };
+
+    const start = () => {
+      window.cancelAnimationFrame(raf);
+      draw(0);
+      if (!reduceMotion.matches) {
+        raf = window.requestAnimationFrame(loop);
+      }
+    };
+
+    resize();
+    start();
+    window.addEventListener("resize", () => {
+      resize();
+      start();
+    });
+    reduceMotion.addEventListener("change", start);
+  }
+</script>

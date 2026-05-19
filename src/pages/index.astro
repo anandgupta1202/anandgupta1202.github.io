@@ -1,0 +1,150 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import WritingCard from "../components/WritingCard.astro";
+import profile from "../data/profile.json";
+import { getPublishedWriting, sortFeaturedWriting } from "../lib/writing";
+
+const writing = await getPublishedWriting();
+const featuredWriting = sortFeaturedWriting(writing).slice(0, 3);
+const pinnedProjects = profile.projects.filter((project) => project.pinned).slice(0, 2);
+---
+
+<BaseLayout>
+  <Header />
+  <main id="main-content" class="page" tabindex="-1">
+    <section class="hero-grid" aria-labelledby="hero-title">
+      <div data-reveal="hero">
+        <h1 id="hero-title" class="hero-title">
+          Anand <span>Gupta</span>
+        </h1>
+        <p class="hero-lede">
+          <span class="sr-only">{profile.headline}</span>
+          <span
+            id="hero-headline-motion"
+            class="typewriter"
+            data-typewriter
+            data-phrases={JSON.stringify(profile.headlinePhrases)}
+            aria-hidden="true"
+          >
+            {profile.headlinePhrases[0]}
+          </span>
+        </p>
+        <p class="hero-bio">{profile.bio}</p>
+        <div class="action-row">
+          <a class="button primary" href={`mailto:${profile.email}`}>{profile.cta.primaryLabel}</a>
+          <a class="button" href="/blog/">{profile.cta.secondaryLabel}</a>
+        </div>
+      </div>
+
+      <aside class="identity-card" aria-label="About Anand" data-reveal>
+        <dl>
+          {
+            profile.identityRows.map((row) => (
+              <div class="identity-row">
+                <dt class="card-kicker">{row.label}</dt>
+                <dd>{row.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </aside>
+    </section>
+
+    <section class="section" aria-labelledby="writing-title">
+      <div class="section-header" data-reveal>
+        <div>
+          <p class="section-label">Recent writing</p>
+          <h2 id="writing-title" class="section-title">Writing worth opening</h2>
+          <p class="section-copy">
+            A few trails into how I think: data that tells on itself, models in messy settings, and the product questions around both.
+          </p>
+        </div>
+        <a class="button" href="/blog/">All blogs</a>
+      </div>
+      <div class="writing-list">
+        {featuredWriting.map((entry) => <WritingCard entry={entry} />)}
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="code-title">
+      <div class="section-header" data-reveal>
+        <div>
+          <p class="section-label">Selected code</p>
+          <h2 id="code-title" class="section-title">Proof in public</h2>
+          <p class="section-copy">
+            Repos and experiments that make the work more concrete than a paragraph can.
+          </p>
+        </div>
+        <a class="button" href="/code/">All code</a>
+      </div>
+      <div class="project-grid">
+        {pinnedProjects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <script>
+    const typewriter = document.querySelector("[data-typewriter]");
+
+    if (typewriter instanceof HTMLElement) {
+      const phrases = JSON.parse(typewriter.dataset.phrases ?? "[]") as string[];
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      let phraseIndex = 0;
+      let charIndex = phrases[0]?.length ?? 0;
+      let deleting = true;
+      let timeout = 0;
+
+      const clearTick = () => {
+        window.clearTimeout(timeout);
+        timeout = 0;
+      };
+
+      const schedule = (delay: number) => {
+        clearTick();
+        timeout = window.setTimeout(tick, delay);
+      };
+
+      const tick = () => {
+        if (reduceMotion.matches) return;
+
+        const phrase = phrases[phraseIndex];
+        typewriter.textContent = phrase.slice(0, charIndex);
+
+        if (!deleting && charIndex === phrase.length) {
+          deleting = true;
+          schedule(1300);
+          return;
+        }
+
+        if (deleting && charIndex === 0) {
+          deleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+          schedule(260);
+          return;
+        }
+
+        charIndex += deleting ? -1 : 1;
+        schedule(deleting ? 42 : 72);
+      };
+
+      const syncMotionPreference = () => {
+        clearTick();
+        typewriter.textContent = phrases[0] ?? "";
+        phraseIndex = 0;
+        charIndex = phrases[0]?.length ?? 0;
+        deleting = true;
+
+        if (phrases.length > 1 && !reduceMotion.matches) {
+          schedule(900);
+        }
+      };
+
+      reduceMotion.addEventListener("change", syncMotionPreference);
+      window.addEventListener("pagehide", clearTick);
+      syncMotionPreference();
+    }
+  </script>
+</BaseLayout>

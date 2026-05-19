@@ -1,0 +1,64 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { formatFullDate } from "../../lib/writing";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("writing", ({ data }) => {
+    return !data.draft && !data.externalUrl;
+  });
+
+  return entries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry }
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  path={`/blog/${entry.slug}/`}
+  image={entry.data.heroImage}
+>
+  <Header />
+  <main id="main-content" class="page narrow" tabindex="-1">
+    <article>
+      <header class="article-header" data-reveal="hero">
+        <p class="meta-line">
+          <time datetime={entry.data.pubDate.toISOString()}>{formatFullDate(entry.data.pubDate)}</time>
+          <span aria-hidden="true"> / </span>
+          <span>{entry.data.source}</span>
+        </p>
+        <h1 class="article-title">{entry.data.title}</h1>
+        <p class="article-description">{entry.data.description}</p>
+        {
+          entry.data.tags.length > 0 && (
+            <div class="tag-row" style="margin-top: 18px;">
+              {entry.data.tags.map((tag) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+          )
+        }
+        {
+          entry.data.heroImage && (
+            <figure class="article-hero">
+              <img src={entry.data.heroImage} alt={entry.data.heroAlt ?? ""} decoding="async" />
+              {entry.data.heroAlt && <figcaption>{entry.data.heroAlt}</figcaption>}
+            </figure>
+          )
+        }
+      </header>
+      <div class="prose" data-reveal>
+        <Content />
+      </div>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>

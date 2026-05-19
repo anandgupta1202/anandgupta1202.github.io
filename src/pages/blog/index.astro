@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import WritingCard from "../../components/WritingCard.astro";
+import { getPublishedWriting } from "../../lib/writing";
+
+const writing = await getPublishedWriting();
+---
+
+<BaseLayout
+  title="Blog"
+  description="Writing by Anand Gupta on AI systems, data science, product thinking, and machine learning."
+  path="/blog/"
+>
+  <Header />
+  <main id="main-content" class="page narrow" tabindex="-1">
+    <section aria-labelledby="blog-title" data-reveal="hero">
+      <p class="section-label">All writing</p>
+      <h1 id="blog-title" class="section-title">Blogs</h1>
+      <p class="section-copy">
+        Essays, exported posts, and links to writing published elsewhere.
+      </p>
+    </section>
+
+    <section class="section" aria-label="Blog list" data-reveal>
+      <div class="writing-list">
+        {writing.map((entry) => <WritingCard entry={entry} />)}
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
