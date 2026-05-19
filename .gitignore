@@ -1,6 +1,10 @@
 node_modules/
 dist/
 .astro/
+.cache/
+.wrangler/
+.agents/
+.codex/
 .env
 .env.*
 .DS_Store
