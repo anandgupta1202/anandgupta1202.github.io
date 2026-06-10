@@ -1,16 +1,25 @@
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 */
 :root {
-  --bg: oklch(14% 0.014 68);
-  --bg-soft: oklch(18% 0.014 68);
-  --bg-hover: oklch(23% 0.018 68);
-  --text: oklch(96% 0.018 78);
-  --muted: oklch(80% 0.024 76);
-  --dim: oklch(64% 0.025 76);
-  --accent: oklch(73% 0.15 61);
-  --accent-strong: oklch(80% 0.15 65);
-  --accent-soft: oklch(73% 0.15 61 / 13%);
-  --border: oklch(73% 0.15 61 / 22%);
-  --border-strong: oklch(73% 0.15 61 / 46%);
-  --shadow: oklch(6% 0.01 68 / 28%);
+  --bg: oklch(90% 0.05 86);
+  --bg-soft: oklch(95% 0.035 91);
+  --bg-hover: oklch(87% 0.054 83);
+  --paper-deep: oklch(81% 0.057 78);
+  --text: oklch(22% 0.026 67);
+  --muted: oklch(34% 0.028 68);
+  --dim: oklch(49% 0.032 70);
+  --accent: oklch(48% 0.118 43);
+  --accent-strong: oklch(36% 0.125 38);
+  --accent-soft: oklch(78% 0.108 68 / 28%);
+  --blueprint: oklch(38% 0.055 229);
+  --blueprint-soft: oklch(38% 0.055 229 / 14%);
+  --rule: oklch(26% 0.026 67 / 18%);
+  --rule-strong: oklch(22% 0.026 67 / 38%);
+  --paper-light: oklch(98% 0.025 98 / 58%);
+  --paper-surface: oklch(96% 0.032 92 / 72%);
+  --paper-stain: oklch(57% 0.09 51 / 11%);
+  --border: var(--rule);
+  --border-strong: var(--rule-strong);
+  --shadow: oklch(39% 0.036 62 / 18%);
   --page: min(1080px, calc(100vw - 40px));
   --content: min(760px, calc(100vw - 40px));
   --sans: "Avenir Next", Avenir, "Trebuchet MS", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -48,12 +57,14 @@
 }
 
 html {
-  color-scheme: dark;
+  overflow-x: clip;
+  color-scheme: light;
   background: var(--bg);
   scroll-behavior: smooth;
 }
 
 body {
+  overflow-x: clip;
   min-height: 100vh;
   margin: 0;
   background: var(--bg);
@@ -105,11 +116,11 @@ body::before {
   z-index: 0;
   pointer-events: none;
   content: "";
-  background-image:
-    linear-gradient(oklch(96% 0.018 78 / 2.5%) 1px, transparent 1px),
-    linear-gradient(90deg, oklch(96% 0.018 78 / 2.5%) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: linear-gradient(to bottom, black, transparent 72%);
+  background:
+    linear-gradient(var(--rule) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: linear-gradient(to bottom, black, transparent 76%);
 }
 
 a {
@@ -175,32 +186,54 @@ button {
   background: var(--bg);
 }
 
-.shader-backdrop canvas,
-.shader-veil,
-.shader-grain {
+.archive-paper,
+.archive-plate,
+.archive-grain {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
 
-.shader-backdrop canvas {
-  filter: saturate(1.24) brightness(0.9);
-}
-
-.shader-veil {
+.archive-paper {
   background:
-    linear-gradient(90deg, oklch(9% 0.012 68 / 82%) 0%, oklch(9% 0.012 68 / 56%) 42%, oklch(9% 0.012 68 / 32%) 100%),
-    linear-gradient(180deg, oklch(9% 0.012 68 / 14%) 0%, oklch(9% 0.012 68 / 68%) 100%);
+    radial-gradient(circle at 12% 18%, var(--paper-light) 0 11%, transparent 30%),
+    radial-gradient(circle at 82% 12%, var(--paper-stain) 0 8%, transparent 26%),
+    radial-gradient(circle at 74% 78%, var(--blueprint-soft) 0 9%, transparent 31%),
+    linear-gradient(135deg, var(--bg-soft), var(--bg) 47%, var(--paper-deep));
 }
 
-.shader-grain {
-  opacity: 0.2;
+.archive-plate {
+  opacity: 0.48;
+  mix-blend-mode: multiply;
+}
+
+.archive-plate-a {
+  background:
+    linear-gradient(90deg, transparent 0 6%, var(--rule) 6% calc(6% + 1px), transparent calc(6% + 1px) 94%, var(--rule) 94% calc(94% + 1px), transparent calc(94% + 1px)),
+    linear-gradient(0deg, transparent 0 12%, var(--rule) 12% calc(12% + 1px), transparent calc(12% + 1px) 88%, var(--rule) 88% calc(88% + 1px), transparent calc(88% + 1px)),
+    linear-gradient(36deg, transparent 0 42%, var(--blueprint-soft) 42% calc(42% + 1px), transparent calc(42% + 1px)),
+    linear-gradient(145deg, transparent 0 58%, var(--blueprint-soft) 58% calc(58% + 1px), transparent calc(58% + 1px));
+}
+
+.archive-plate-b {
+  opacity: 0.34;
+  background:
+    radial-gradient(circle at 78% 28%, transparent 0 82px, var(--rule) 83px 84px, transparent 85px 130px, var(--rule) 131px 132px, transparent 133px),
+    radial-gradient(circle at 20% 74%, transparent 0 58px, var(--blueprint-soft) 59px 60px, transparent 61px),
+    repeating-linear-gradient(90deg, transparent 0 36px, var(--rule) 37px 38px, transparent 39px 72px),
+    repeating-linear-gradient(0deg, transparent 0 36px, var(--rule) 37px 38px, transparent 39px 72px);
+  mask-image: linear-gradient(115deg, transparent 0 18%, black 32% 82%, transparent 100%);
+}
+
+.archive-grain {
+  opacity: 0.52;
   background-image:
-    radial-gradient(circle at 20% 30%, oklch(96% 0.018 78 / 16%) 0 1px, transparent 1px),
-    radial-gradient(circle at 70% 60%, oklch(73% 0.15 61 / 12%) 0 1px, transparent 1px);
-  background-size: 9px 11px, 13px 15px;
-  mix-blend-mode: overlay;
+    radial-gradient(circle at 20% 30%, var(--rule) 0 1px, transparent 1px),
+    radial-gradient(circle at 70% 60%, var(--paper-light) 0 1px, transparent 1px),
+    linear-gradient(90deg, transparent 0 49%, var(--paper-stain) 50%, transparent 51%);
+  background-size: 9px 11px, 13px 15px, 173px 100%;
+  mix-blend-mode: multiply;
 }
 
 .topbar {
@@ -208,8 +241,8 @@ button {
   top: 0;
   z-index: 50;
   border-bottom: 1px solid var(--border);
-  background: oklch(14% 0.014 68 / 72%);
-  backdrop-filter: blur(18px) saturate(120%);
+  background: var(--paper-light);
+  backdrop-filter: blur(14px) saturate(104%);
 }
 
 .topbar-inner {
@@ -664,7 +697,7 @@ button {
   min-height: 186px;
   border: 1px solid var(--border);
   border-radius: 8px;
-  background: oklch(18% 0.014 68 / 78%);
+  background: var(--paper-surface);
   box-shadow: 0 18px 48px var(--shadow);
   padding: 20px;
   text-decoration: none;
@@ -824,7 +857,7 @@ button {
 .notice {
   border: 1px solid var(--border);
   border-radius: 8px;
-  background: oklch(18% 0.014 68 / 72%);
+  background: var(--paper-surface);
   color: var(--muted);
   margin: 1.6rem 0;
   padding: 16px 18px;
