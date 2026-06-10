@@ -1,0 +1,19 @@
+{
+  "scannedAt": "2026-06-10",
+  "framework": "Astro 5",
+  "fontStack": "Google Sora plus local/system sans, serif, and mono tokens",
+  "palette": "OKLCH custom properties in src/styles/global.css",
+  "motion": "No motion library; local reveal and typewriter scripts only",
+  "spacing": "CSS custom page/content width tokens and fixed spacing scale",
+  "preserve": [
+    "Astro file structure",
+    "content hierarchy",
+    "typography scale",
+    "existing reveal/typewriter behavior"
+  ],
+  "introduce": [
+    "archival paper palette",
+    "static architectural diagram background",
+    "ink-rule borders and parchment surfaces"
+  ]
+}
