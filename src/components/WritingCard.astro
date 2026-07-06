@@ -1,7 +1,6 @@
 ---
 import type { WritingEntry } from "../lib/writing";
 import { formatDate, getWritingUrl } from "../lib/writing";
-import SourceLogo from "./SourceLogo.astro";
 
 interface Props {
   entry: WritingEntry;
@@ -36,5 +35,4 @@ const isExternal = Boolean(entry.data.externalUrl);
       )
     }
   </div>
-  <SourceLogo source={entry.data.source} />
 </a>
