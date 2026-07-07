@@ -12,7 +12,7 @@ export async function getStaticPaths() {
   });
 
   return entries.map((entry) => ({
-    params: { slug: entry.slug },
+    params: { slug: entry.id },
     props: { entry }
   }));
 }
@@ -24,14 +24,14 @@ const { Content } = await render(entry);
 <BaseLayout
   title={entry.data.title}
   description={entry.data.description}
-  path={`/blog/${entry.slug}/`}
+  path={`/blog/${entry.id}/`}
   image={entry.data.heroImage}
   type="article"
   publishedTime={entry.data.pubDate}
   modifiedTime={entry.data.updatedDate ?? entry.data.pubDate}
 >
   <Header />
-  <main id="main-content" class="page narrow" tabindex="-1">
+  <main id="main-content" class="page narrow reading-panel" tabindex="-1">
     <article>
       <header class="article-header" data-reveal="hero">
         <p class="meta-line">

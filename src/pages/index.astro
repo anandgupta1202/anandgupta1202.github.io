@@ -10,47 +10,136 @@ import { getPublishedWriting, sortFeaturedWriting } from "../lib/writing";
 const writing = await getPublishedWriting();
 const featuredWriting = sortFeaturedWriting(writing).slice(0, 3);
 const pinnedProjects = profile.projects.filter((project) => project.pinned).slice(0, 2);
+const companyLogos = [
+  {
+    name: "Wysa",
+    detail: "Global Mental Health AI",
+    logoSrc: "/images/logos/optimized/wysa.png",
+    width: 620,
+    height: 202
+  },
+  {
+    name: "WeWork Labs",
+    detail: "Workplace platform",
+    logoSrc: "/images/logos/optimized/wework-labs.png",
+    width: 620,
+    height: 100
+  },
+  {
+    name: "Marriott",
+    detail: "Hotels & hospitality",
+    logoSrc: "/images/logos/optimized/marriott.svg",
+    width: 389,
+    height: 305
+  },
+  {
+    name: "MOHT",
+    detail: "Singapore health transformation",
+    logoSrc: "/images/logos/optimized/moht.png",
+    width: 760,
+    height: 161
+  },
+  {
+    name: "NHS",
+    detail: "UK Healthcare System",
+    logoSrc: "/images/logos/optimized/nhs.svg",
+    width: 371,
+    height: 150
+  }
+];
+const companyLogoLoop = [...companyLogos, ...companyLogos];
 ---
 
 <BaseLayout>
   <Header />
   <main id="main-content" class="page" tabindex="-1">
-    <section class="hero-grid" aria-labelledby="hero-title">
-      <div data-reveal="hero">
+    <section class="hero-editorial" aria-labelledby="hero-title">
+      <figure class="hero-image" data-reveal="hero">
+        <picture>
+          <source media="(max-width: 760px)" srcset="/images/anand-hero-portrait.png" />
+          <img
+            src="/images/anand-hero-wide.png"
+            alt="A person seated at a computer in a green valley facing nested translucent screens."
+            width="1672"
+            height="941"
+            loading="eager"
+            decoding="async"
+          />
+        </picture>
+      </figure>
+
+      <div class="hero-copy" data-reveal="hero">
+        <p class="eyebrow">Portfolio / applied AI systems</p>
         <h1 id="hero-title" class="hero-title">
           Anand <span>Gupta</span>
         </h1>
-        <p class="hero-lede">
-          <span class="sr-only">{profile.headline}</span>
-          <span
-            id="hero-headline-motion"
-            class="typewriter"
-            data-typewriter
-            data-phrases={JSON.stringify(profile.headlinePhrases)}
-            aria-hidden="true"
-          >
-            {profile.headlinePhrases[0]}
-          </span>
-        </p>
-        <p class="hero-bio">{profile.bio}</p>
-        <div class="action-row">
-          <a class="button primary" href={`mailto:${profile.email}`}>{profile.cta.primaryLabel}</a>
-          <a class="button" href="/blog/" data-astro-prefetch>{profile.cta.secondaryLabel}</a>
+        <div class="hero-lower">
+          <p class="hero-lede">
+            <span class="sr-only">{profile.headline}</span>
+            <span
+              id="hero-headline-motion"
+              class="typewriter"
+              data-typewriter
+              data-phrases={JSON.stringify(profile.headlinePhrases)}
+              aria-hidden="true"
+            >
+              {profile.headlinePhrases[0]}
+            </span>
+          </p>
+          <p class="hero-bio">{profile.bio}</p>
+          <div class="action-row">
+            <a class="button primary" href={`mailto:${profile.email}`}>{profile.cta.primaryLabel}</a>
+            <a class="button" href="/blog/" data-astro-prefetch>{profile.cta.secondaryLabel}</a>
+          </div>
         </div>
       </div>
 
-      <aside class="identity-card" aria-label="About Anand" data-reveal>
-        <dl>
+      <aside class="identity-strip" aria-label="About Anand" data-reveal>
+        {
+          profile.identityRows.map((row) => (
+            <div class="identity-row">
+              <p class="card-kicker">{row.label}</p>
+              <p>{row.value}</p>
+            </div>
+          ))
+        }
+      </aside>
+    </section>
+
+    <section class="logo-section" aria-labelledby="companies-title">
+      <div class="section-header compact" data-reveal>
+        <div>
+          <h2 id="companies-title" class="section-title">Delivered for</h2>
+        </div>
+      </div>
+      <div class="logo-marquee" aria-label="Companies Anand has worked with" data-reveal>
+        <div class="logo-track">
           {
-            profile.identityRows.map((row) => (
-              <div class="identity-row">
-                <dt class="card-kicker">{row.label}</dt>
-                <dd>{row.value}</dd>
-              </div>
+            companyLogoLoop.map((company) => (
+              <article class={`logo-card ${company.logoSrc ? "has-logo" : ""}`}>
+                {
+                  company.logoSrc ? (
+                    <img
+                      class={`logo-image logo-${company.name.toLowerCase().replaceAll(" ", "-")}`}
+                      src={company.logoSrc}
+                      alt={`${company.name} logo`}
+                      width={company.width}
+                      height={company.height}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <p class={`logo-mark logo-${company.name.toLowerCase().replaceAll(" ", "-")}`}>
+                      {company.name}
+                    </p>
+                  )
+                }
+                <p>{company.detail}</p>
+              </article>
             ))
           }
-        </dl>
-      </aside>
+        </div>
+      </div>
     </section>
 
     <section class="section" aria-labelledby="writing-title">

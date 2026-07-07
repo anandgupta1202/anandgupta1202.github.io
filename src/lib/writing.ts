@@ -4,7 +4,7 @@ export type WritingEntry = CollectionEntry<"writing">;
 
 export async function getPublishedWriting() {
   const entries = await getCollection("writing", ({ data }) => {
-    return import.meta.env.DEV || !data.draft;
+    return !data.draft;
   });
 
   return entries.sort((a, b) => {
@@ -25,7 +25,7 @@ export function sortFeaturedWriting(entries: WritingEntry[]) {
 }
 
 export function getWritingUrl(entry: WritingEntry) {
-  return entry.data.externalUrl ?? `/blog/${entry.slug}/`;
+  return entry.data.externalUrl ?? `/blog/${entry.id}/`;
 }
 
 export function formatDate(date: Date) {
