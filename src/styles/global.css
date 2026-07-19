@@ -26,7 +26,7 @@
   --border-strong: var(--rule-strong);
   --shadow: oklch(21% 0.026 79 / 14%);
   --page: min(1180px, calc(100vw - 40px));
-  --content: min(760px, calc(100vw - 40px));
+  --content: min(calc(100vw - 40px), clamp(760px, 72vw, 1200px));
   --sans: Alice, Georgia, serif;
   --display: Alice, Georgia, serif;
   --script: Sacramento, "Brush Script MT", cursive;
@@ -1054,7 +1054,7 @@ button {
   line-height: 1.5;
 }
 
-.prose code {
+.prose :not(pre) > code {
   border: 1px solid var(--border);
   border-radius: 4px;
   background: var(--bg-soft);
@@ -1065,10 +1065,67 @@ button {
   overflow-wrap: anywhere;
 }
 
+.prose pre {
+  margin: 0 0 1.3rem;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.9em;
+  line-height: 1.6;
+  -webkit-overflow-scrolling: touch;
+}
+
+.prose pre code {
+  display: block;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font-family: var(--mono);
+  font-size: inherit;
+  overflow-wrap: normal;
+  white-space: pre;
+}
+
 .prose hr {
   border: 0;
   border-top: 1px solid var(--border);
   margin: 2rem 0;
+}
+
+.prose table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 0 1.3rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-collapse: collapse;
+  font-size: 0.94em;
+  line-height: 1.5;
+}
+
+.prose thead {
+  background: var(--bg-soft);
+}
+
+.prose th,
+.prose td {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose th {
+  color: var(--text);
+  font-family: var(--display);
+  font-weight: var(--weight-semibold);
+}
+
+.prose tbody tr:nth-child(even) {
+  background: var(--paper-surface);
 }
 
 .notice {
