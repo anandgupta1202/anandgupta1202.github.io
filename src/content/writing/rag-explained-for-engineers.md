@@ -13,13 +13,15 @@ heroAlt: "RAG is a stack of trade-offs between retrieval quality, latency, and c
 ---
 
 Every RAG system looks clean in a diagram. Query in. Context retrieved. Answer out.
-Look inside, though, and it's the opposite of a black box.
+Look inside, though, and it’s the opposite of a black box.
 
-**RAG is a stack of trade-offs. It is a pipeline where each component needs to be optimized.**
+**RAG is a stack of trade-offs. It is a pipeline where each component needs to be optimised.**
 
 Most tutorials skip that part and show you the happy path: split documents, embed chunks, store vectors, retrieve context, generate an answer. The diagram is accurate. It is also useless if you are the engineer responsible for making the system work after the demo.
 
-In production, depending on the usecase you need to decide:
+RAG is a stack of trade-offs: pipeline stages hide a triangle between retrieval quality, latency, and cost.
+
+In production, depending on the use case, you need to decide:
 
 - What chunk size should you use?
 - Which embedding model is good enough for your domain?
@@ -38,12 +40,12 @@ My article is not the one universal answer because there is no such thing, but t
 
 Use this when:
 
-- You are designing your first production RAG system
-- Your demo works but real users are getting weak answers
+- You are designing your first production RAG system.
+- Your demo works, but real users are getting weak answers.
 - Your team is debating chunk size, vector databases, reranking, or top-k
-- Retrieval quality feels inconsistent and nobody can prove why
-- You are preparing for a RAG/system-design interview
-- Someone says “let’s just increase top-k” and everyone nods
+- Retrieval quality feels inconsistent, and nobody can prove why
+- You are preparing for a RAG/system-design interview.
+- Someone says “let’s just increase top-k”, and everyone nods.
 
 If your team is debating infrastructure before building an eval set, send them this article and save everyone three weeks.
 
@@ -53,7 +55,7 @@ If your team is debating infrastructure before building an eval set, send them t
 
 ## The Pipeline in One Breath
 
-In a general sense, the RAG pipeline can be decomposed into seven stages.
+Broadly, the RAG pipeline can be decomposed into seven stages.
 
 ```text
 Chunking → Embeddings → Vector Index → Query Transformation → Retrieval → Generation → Evaluation
@@ -71,7 +73,7 @@ Improving one usually taxes another.
 - Lower latency often means fewer candidates or simpler models → worse recall.
 - Lower cost often means smaller embeddings, cheaper infra, or fewer LLM calls → weaker quality.
 
-Each of these trade-offs need to be thought through before building the pipeline.
+Each of these trade-offs needs to be thought through before building the pipeline.
 
 ---
 
@@ -88,28 +90,28 @@ Then two weeks go by and support tickets have already piled up. You attempt to u
 - Latency was fine till the team added reranking, then it became painful.
 - Evaluation is “manual vibes” because nobody built a golden set.
 
-While writing the incident report it might look like that the issue is with the LLM, or the vector database or the prompt. But if you dig deeper the real problems are more mundane:
+While writing the incident report, it might look like that the issue is with the LLM, or the vector database or the prompt. But if you dig deeper, the real problems are more mundane:
 
 - Chunks are too large, so embeddings match vague blobs instead of precise facts.
 - Metadata filters were added too late, so permissions and document scopes are messy.
 - Domain terms are not handled well by the embedding model.
 - Nobody knows whether Recall@k improved or got worse after each change.
 
-So, let us attempt to breakdown each concept and understand in detail.
+So, let us attempt to break down each concept and understand it in detail.
 
 ---
 
 ## Stage 1: Chunking — The Decision That Breaks Everything Quietly
 
-By now you must know that LLMs need to see relevant pieces of information or facts to generate an answer to your specific question. Now imagine you have a large document, or say, even a small document with a lots of diverse information. How do you make sure that the LLM sees only the relevant pieces and ignores the rest. One of the ways is to feed all the information to the LLM in the prompt and pray that it understands the specific parts needed to answer your question.
+By now you must know that LLMs need to see relevant pieces of information or facts to generate an answer to your specific question. Now imagine you have a large document, or say, even a small document with a lot of diverse information. How do you make sure that the LLM sees only the relevant pieces and ignores the rest? One of the ways is to feed all the information to the LLM in the prompt and pray that it understands the specific parts needed to answer your question.
 
 The better approach would be to divide all the information into smaller pieces **or chunks** and create a system to surface only the most important and relevant chunks. Chunking is the process of how you split source documents into pieces the retrieval system can search. Honestly, it is one of the highest-leverage decisions in the whole system.
 
-So lets see what's the key thing we need to consider and which trade-offs is coupled with that decision:
+So let's see what the key thing we need to consider is and which trade-offs are coupled with that decision:
 
-To chunk a document we need to decide the size of each chunks, and the thing to keep in mind is **Small chunks give precise retrieval but lose context. Large chunks preserve context but create noisy retrieval.**
+To chunk a document, we need to decide the size of each chunk, and the thing to keep in mind is **Small chunks give precise retrieval but lose context. Large chunks preserve context but create noisy retrieval.**
 
-What I mean by that is a 100-token chunk may match a query very specifically, but it might not include the surrounding explanation needed to answer correctly. While a 2000-token chunk may preserve the full section, but the embedding now represents too many ideas at once. It starts matching everything and nothing.
+What I mean by that is a 100-token chunk may match a query very specifically, but it might not include the surrounding explanation needed to answer correctly. While a 2000-token chunk may preserve the full section, the embedding now represents too many ideas at once. It starts matching everything and nothing.
 
 ![Chunking trade-off: small chunks improve precision, large chunks preserve context, and parent-document retrieval gets both.](/blog/images/rag-explained-for-engineers/02-chunking-precision-vs-context.png)
 
@@ -136,7 +138,7 @@ Quick snapshot:
 
 The most useful pattern here is parent-document retrieval.
 
-You index small chunks because small chunks make search precise. A query about refund eligibility should match the paragraph about refund eligibility, not all FAQs around refunds in general. But once that small chunk matches, you do not have to send only that small chunk to the LLM. You can return the larger parent section around it. Lets say, you also send the full heading, neighboring paragraphs, table, policy clause, or document section with the matching chunk. **That is how search gets precision and generation gets context.**
+You index small chunks because small chunks make search precise. A query about refund eligibility should match the paragraph about refund eligibility, not all FAQs around refunds in general. But once that small chunk matches, you do not have to send only that small chunk to the LLM. You can return the larger parent section around it. Let's say you also send the full heading, neighbouring paragraphs, table, policy clause, or document section with the matching chunk. **That is how search gets precision and generation gets context.**
 
 This matters whenever one sentence is not enough to answer safely. Clinical content, legal text, technical documentation, policy documents, and compliance-heavy material often need the surrounding explanation. Parent-document retrieval gives you a practical way to avoid the false choice between tiny chunks that lose context and huge chunks that retrieve poorly.
 
@@ -147,18 +149,19 @@ Code examples and articles worth checking out:
 
 ## Stage 2: Embeddings — Your Model Does Not Know Your Domain
 
-Chunking decides which parts of text becomes searchable. Embeddings decide what **similar** means.
+Chunking decides which parts of text become searchable. Embeddings decide what **similar** means.
 
-Before we talk about the best techniques, lets talk about what happens when the embedding layer is sub-optimal. In worst cases like these, you will see that the right chunk exists and even though the user asks a reasonable question the retrieval does not see the relevant chunk. As a result, the LLM never sees the right context, so it either gives a weak answer or confidently answers from the wrong source.
+Before we talk about the best techniques, let's talk about what happens when the embedding layer is sub-optimal. In worst cases like these, you will see that the right chunk exists and even though the user asks a reasonable question, the retrieval does not see the relevant chunk. As a result, the LLM never sees the right context, so it either gives a weak answer or confidently answers from the wrong source.
 
-Often times, we look to optimize the prompt or the vector database and sometimes those may be the issue. But many times the problem is simpler: the embedding model does not understand your domain language well enough.
+Oftentimes, we look to optimise the prompt or the vector database, and sometimes those may be the issue. But many times the problem is simpler: the embedding model does not understand your domain language well enough.
 
-Now let us understand what does embedding models do? Embedding models turn text into vectors (N-dimensional numbers).
-However the main thing this enables us to do is treat your chunks as numbers in a set. Additionally you can treat user-texts or queries as numbers and search for few numbers from the set of chunks which are closest to the user text.
+Now let us understand what embedding models do? Embedding models turn text into vectors (N-dimensional numbers).
+However, the main thing this enables us to do is treat your chunks as numbers in a set. Additionally, you can treat user texts or queries as numbers and search for a few numbers from the set of chunks which are closest to the user text.
 
-This however raises two important questions:
-1. What are the different type of embedding models? And how does it effect how we search for similar chunks?
-2. Even if let's say, the embedding model is able to generate the best and ideal vectors for each chunk, how to know which chunks are relevant to the user text.
+This however, raises two important questions:
+
+1. What are the different types of embedding models? And how does it affect how we search for similar chunks?
+2. Even if, let's say, the embedding model is able to generate the best and ideal vectors for each chunk, how to know which chunks are relevant to the user text?
 
 ### Dense vs sparse retrieval
 
@@ -170,9 +173,9 @@ A sparse vector is mostly zeros. It usually represents which words or tokens app
 
 ![Embedding models can miss domain language; hybrid search and domain-aware evaluation catch these blind spots.](/blog/images/rag-explained-for-engineers/03-domain-embedding-blind-spots.png)
 
-A dense vector is different. Almost every dimension has some value, and those values are learned by a model. The dimensions do not map cleanly to individual words. Instead, the vector tries to capture meaning. That is why a dense model can place "cardiac discomfort" close to "chest pain" even when the words are different.
+A dense vector is different. Almost every dimension has some value, and those values are learned by a model. The dimensions do not map cleanly to individual words. Instead, the vector tries to capture meaning. That is why a dense model can place “cardiac discomfort” close to “chest pain” even when the words are different.
 
-Dense retrieval uses dense vectors to search by meaning. You take the query, convert it into a dense vector, and search for chunk vectors that are close to it. This is useful when users do not use the same words as your documents. A user asking "Can I cancel after payment?" may retrieve a policy section titled "Refund eligibility" even if the word "cancel" is not present.
+Dense retrieval uses dense vectors to search by meaning. You take the query, convert it into a dense vector, and search for chunk vectors that are close to it. This is useful when users do not use the same words as your documents. A user asking “Can I cancel after payment?” may retrieve a policy section titled “Refund eligibility” even if the word “cancel” is not present.
 
 But dense retrieval is not the ideal fit for all sorts of retrieval. It can miss exact strings that matter a lot: IDs, product names, medication names, error codes, acronyms, policy numbers, and internal shorthand. Those tokens may be the whole point of the query. If a user asks about policy `ABC-123`, or a specific medication abbreviation, semantic similarity is not enough. The system needs to notice the exact token.
 
@@ -189,9 +192,9 @@ The important point is to understand what kind of question your users ask. If us
 
 ![Dense retrieval catches meaning, sparse retrieval catches exact tokens, and hybrid retrieval combines both.](/blog/images/rag-explained-for-engineers/08-dense-sparse-hybrid-xiaohei.png)
 
-#### Hybrid Retrieval Strategy
+### Hybrid Retrieval Strategy
 
-As you saw above, we can't treat dense search as the whole retrieval strategy. Make sure you can measure when semantic similarity is helping and when exact matching would have saved you. Or you can use both smartly. The answer here is hybrid retrieval.
+As you saw above, we can’t treat dense search as the whole retrieval strategy. Make sure you can measure when semantic similarity is helping and when exact matching would have saved you. Or you can use both smartly. The answer here is hybrid retrieval.
 
 Use dense search to catch meaning. Use sparse search to catch exact terms. Then merge or rerank (more on that later) the candidates before sending context to the LLM.
 
@@ -213,28 +216,25 @@ That does not mean smaller is always better. It means you should know what you a
 
 If I had to ship a first version, I would start with a strong general embedding model:
 
-```text
-text-embedding-3-large
-or
-bge-large-en-v1.5
-```
+- `text-embedding-3-large`
+- `bge-large-en-v1.5`
 
 Then I would build an eval set that includes domain-specific queries early. I would include acronyms, IDs, internal terms, synonyms, abbreviations, and queries where the answer depends on finding the exact source.
 
-If the dense model fails on exact terms, I would test hybrid search before fine-tuning. If it fails on domain synonyms or specialized language, I would test synonym-rich metadata or a domain-adapted model. Fine-tuning embeddings might be on the table, but I will only think about it if the domain is ultra niche and new and all other approaches fail.
+If the dense model fails on exact terms, I would test hybrid search before fine-tuning. If it fails on domain synonyms or specialised language, I would test synonym-rich metadata or a domain-adapted model. Fine-tuning embeddings might be on the table, but I will only think about it if the domain is ultra niche and new and all other approaches fail.
 
 Checklist for you:
-- Start with a strong general model
-- Evaluate on domain-specific queries
-- Add hybrid retrieval if exact terms matter
-- Try metadata or a domain-adapted model if language mismatch is systematic
-- Fine-tune only when the failure pattern justifies the complexity
+- Start with a strong general model.
+- Evaluate on domain-specific queries.
+- Add hybrid retrieval if exact terms matter.
+- Try metadata or a domain-adapted model if language mismatch is systematic.
+- Fine-tune only when the failure pattern justifies the complexity.
 
 ### Something to keep in mind - versioning
 
 Changing your embedding model is a complete migration. Chunks indexed under Model A cannot be safely searched with Model B. The same is true when you change dimensions, chunking strategy, preprocessing, or source document versions.
 
-So it's important to build versioning into the indexing pipeline from day one. Some of the metadata to version would be these:
+So it’s important to build versioning into the indexing pipeline from day one. Some of the metadata to version would be these:
 
 - embedding model name
 - embedding dimension
@@ -248,7 +248,7 @@ So it's important to build versioning into the indexing pipeline from day one. S
 
 By this stage, you have chunks and embeddings. Now you need somewhere to store those vectors and search them quickly.
 
-A vector database is not something that makes RAG intelligent. On the flip side, Its job is more mechanical. To store vectors, search for nearest neighbors, return candidate chunks, and apply filters so that the system only searches the right subset of data.
+A vector database is not something that makes RAG intelligent. On the flip side, its job is more mechanical. To store vectors, search for nearest neighbours, return candidate chunks, and apply filters so that the system only searches the right subset of data.
 
 If you are responsible of taking care of this or deciding which vector DB to choose, my suggestion would be to not over-engineer too early. Before you debate Pinecone vs Qdrant vs Weaviate vs pgvector, try to answer these simpler questions:
 
@@ -259,7 +259,7 @@ If you are responsible of taking care of this or deciding which vector DB to cho
 - Do we need hybrid search now or later?
 - Can we measure recall before changing index settings?
 
-If you do not know those answers, the vector database choice is mostly premature optimization.
+If you do not know those answers, the vector database choice is mostly premature optimisation.
 
 ### What the vector database actually does
 
@@ -277,7 +277,7 @@ You will find this explicitly mentioned in most DB docs. The [pgvector docs](htt
 
 **IVF** takes a different approach. It partitions vectors into clusters or lists, then searches only some of those lists at query time. This can scale well, especially when memory is constrained, but it needs tuning. Search too few lists and recall suffers. Search too many and latency rises. `pgvector` gives the same warning for IVFFlat: more probes improve recall but cost speed.
 
-**PQ** is about compression. Instead of storing full vectors, product quantization stores compressed representations. That helps when the corpus is very large and memory or storage cost matters. The trade-off is that compression can hurt recall, so PQ usually belongs later, when scale makes the cost problem real.
+**PQ** is about compression. Instead of storing full vectors, product quantisation stores compressed representations. That helps when the corpus is very large and memory or storage cost matters. The trade-off is that compression can hurt recall, so PQ usually belongs later, when scale makes the cost problem real.
 
 Quick snapshot:
 
@@ -308,21 +308,21 @@ Quick snapshot:
 
 ### Metadata filtering
 
-This is a feature that can be heavily used to optimize and control which chunks the retrieval pipeline actually evaluates on. Metadata filtering is used when you don't need to search the entire corpus for every query.
+This is a feature that can be heavily used to optimise and control which chunks the retrieval pipeline actually evaluates on. Metadata filtering is used when you don't need to search the entire corpus for every query.
 
 In a demo, you can embed everything and retrieve from everything. In a real product, retrieval usually needs to be scoped before similarity search or alongside it. The system should search the right subset of documents, not just the nearest vectors globally.
 
 In actual production systems, the filters we need to search for might look like:
 - count of all documents a particular type of user can access
 - only clinical guidelines updated after 2022
-- only documents from product area of "airpods manufacturing"
+- only documents from the product area of "airpods manufacturing"
 - all chunks from a certain jurisdiction, tenant, or source type
 
 This metadata needs to exist at indexing time, which helps in retrieval quality, permissions, freshness, and safety.
 
 For example, a user may ask a perfectly valid question, but the system should only retrieve documents from their tenant. A clinical assistant may need to retrieve only the latest guideline. A legal assistant may need to restrict results to a jurisdiction. A support assistant may need to search only documents for the relevant product line.
 
-To improve on performance issues, [Qdrant recommends payload indexes](https://qdrant.tech/documentation/manage-data/indexing/#payload-index) for fields you plan to filter on because a vector index speeds up vector search, while payload indexes speed up filtering. [Pinecone's metadata filtering docs](https://docs.pinecone.io/guides/search/filter-by-metadata) show the same operational idea, which is that search can be narrowed to records matching metadata expressions.
+To improve on performance issues, [Qdrant recommends payload indexes](https://qdrant.tech/documentation/manage-data/indexing/#payload-index) for fields you plan to filter on because a vector index speeds up vector search, while payload indexes speed up filtering. [Pinecone's metadata filtering docs](https://docs.pinecone.io/guides/search/filter-by-metadata) show the same operational idea: search can be narrowed to records matching metadata expressions.
 
 Adding metadata later often means re-indexing everything. That is why metadata schema design belongs in the ingestion pipeline from the start.
 
@@ -334,9 +334,9 @@ In the vector database stage of the pipeline, we need to consider the most amoun
 
 **Recall vs latency.** ANN indexes have knobs that change how much of the index gets searched. In HNSW, parameters like `efSearch` affect search depth. In IVF, probes control how many partitions are searched. Higher settings usually improve recall and increase latency.
 
-**Memory vs cost.** HNSW can be fast, but graph indexes can use significant memory. PQ and quantization reduce memory and storage, but compression can hurt recall. The right answer depends on corpus size, latency target, and how expensive missed context is for your product.
+**Memory vs cost.** HNSW can be fast, but graph indexes can use significant memory. PQ and quantisation reduce memory and storage, but compression can hurt recall. The right answer depends on corpus size, latency target, and how expensive missed context is for your product.
 
-**Filtering vs speed.** Metadata filters make retrieval safer and more relevant, but if the filter is applied after approximate search, you may retrieve too few usable candidates. This issue might be also addressed with iterative scans, partial indexes, or partitioning depending on the workload.
+**Filtering vs speed.** Metadata filters make retrieval safer and more relevant, but if the filter is applied after approximate search, you may retrieve too few usable candidates. This issue might also be addressed with iterative scans, partial indexes, or partitioning depending on the workload.
 
 **Operational simplicity vs control.** Managed systems reduce ops work. Self-hosted or database-integrated options give more control. Neither is universally better. The right choice depends on who will operate the system after launch.
 
@@ -360,13 +360,13 @@ Finally, treat the vector database as infrastructure for retrieval, not the main
 
 ## Stage 4: Query Transformation — Useful, sometimes
 
-Query transformation means modifying the user's raw query before retrieval.
+Query transformation means modifying the user’s raw query before retrieval.
 
 This stage is optional. In fact, I would treat it as optional by default only because query transformation usually adds an extra step before retrieval. Sometimes that step is an LLM call. Sometimes it is multiple retrieval calls. Either way, it costs latency. If your product needs to answer users quickly, this stage may be too expensive unless it improves retrieval quality by leaps and bounds.
 
-Though there are some cases where it is worth it (more on that later), but first let us see the types of Query Transformation.
+Though there are some cases where it is worth it (more on that later), first let us see the types of Query Transformation.
 
-**Query rewriting** is the process of rewriting the users query into a better or more specific pointed question. Often, users phrase things vaguely. They ask broad questions, mix multiple questions into one, use shorthand, or ask a conceptual question that does not look like the documents you indexed. In those cases, transforming the query can make retrieval much better.
+**Query rewriting** is the process of rewriting the user's query into a better or more specific question. Often, users phrase things vaguely. They ask broad questions, mix multiple questions into one, use shorthand, or ask a conceptual question that does not look like the documents you indexed. In those cases, transforming the query can make retrieval much better.
 
 For example, a user may ask:
 
@@ -382,11 +382,11 @@ refund eligibility after payment
 
 That rewritten query may retrieve the right policy section more reliably than the raw user phrasing.
 
-**Multi-query retrieval** does something similar but broader. Instead of trusting one rewritten query, it generates several query variants and retrieves documents for each one. LangChain's [`MultiQueryRetriever`](https://reference.langchain.com/python/langchain-classic/retrievers/multi_query/MultiQueryRetriever/) is an example of this. It uses an LLM to write a set of queries, retrieve for each, and return the unique union of documents.
+**Multi-query retrieval** does something similar but broader. Instead of trusting one rewritten query, it generates several query variants and retrieves documents for each one. LangChain’s [`MultiQueryRetriever`](https://reference.langchain.com/python/langchain-classic/retrievers/multi_query/MultiQueryRetriever/) is an example of this. It uses an LLM to write a set of queries, retrieve for each, and return the unique union of documents.
 
-**[HyDE](https://developers.llamaindex.ai/python/examples/query_transformations/hydequerytransformdemo/)** goes in a different direction. Instead of rewriting the query, it asks an LLM to generate a hypothetical answer or document, embeds that generated text, and searches with it. This can help when the user's query is too short, abstract, or far away from the language in the corpus.
+**[HyDE](https://developers.llamaindex.ai/python/examples/query_transformations/hydequerytransformdemo/)** goes in a different direction. Instead of rewriting the query, it asks an LLM to generate a hypothetical answer or document, embeds that generated text, and searches with it. This can help when the user’s query is too short, abstract, or far away from the language in the corpus.
 
-**Decomposition** is useful when the user asks a compound question. If someone asks, "What changed in the 2024 policy, and does it affect enterprise customers in India?", one retrieval pass may not be enough. You may need one query for policy changes, another for enterprise customers, and another for India-specific scope. [`DecomposeQueryTransform`](https://developers.llamaindex.ai/python/framework/understanding/putting_it_all_together/q_and_a/#comparecontrast-queries) turns the original query into smaller subqueries that can be answered more easily.
+**Decomposition** is useful when the user asks a compound question. If someone asks, “What changed in the 2024 policy, and does it affect enterprise customers in India?”, one retrieval pass may not be enough. You may need one query for policy changes, another for enterprise customers, and another for India-specific scope. [`DecomposeQueryTransform`](https://developers.llamaindex.ai/python/framework/understanding/putting_it_all_together/q_and_a/#comparecontrast-queries) turns the original query into smaller subqueries that can be answered more easily.
 
 **Step-back prompting** is more reasoning-oriented. Instead of retrieving only for the specific query, the system first asks a broader background question and uses that to guide the final answer. The [Step-Back Prompting paper](https://deepmind.google/research/publications/50274/) frames this as deriving higher-level concepts or principles before solving the specific question. In RAG, that can be useful for conceptual or multi-hop questions, but it is rarely something I would add to a latency-sensitive product.
 
@@ -404,7 +404,7 @@ Quick snapshot:
 
 Every transformation adds latency, money, or both. I feel that this stage only works if the product can afford higher turnaround time to reply to a user and this stage improves the quality of retrieval.
 
-If the product has an user asking a support chatbot a simple question, adding an LLM call before retrieval may make the answer feel unnecessarily slow. If the user is doing deep research, legal analysis, clinical summarization, or internal knowledge exploration, an extra second may be acceptable if retrieval improves meaningfully.
+If the product has a user asking a support chatbot a simple question, adding an LLM call before retrieval may make the answer feel unnecessarily slow. If the user is doing deep research, legal analysis, clinical summarisation, or internal knowledge exploration, an extra second may be acceptable if retrieval improves meaningfully.
 
 This is also where evaluation matters. Do not add query rewriting, multi-query, HyDE, or decomposition because a blog post said it improves RAG. Add it when your eval set shows that raw user queries are the bottleneck.
 
@@ -416,23 +416,23 @@ We have already talked about dense retrieval, sparse retrieval, and hybrid retri
 
 This stage is about what happens after the first retrieval pass.
 
-The first retriever is usually optimized for speed and recall. It searches a large corpus quickly and tries to bring back a broad set of potentially useful chunks. That is useful, but it does not mean the best chunk is ranked first. That is where reranking helps.
+The first retriever is usually optimised for speed and recall. It searches a large corpus quickly and tries to bring back a broad set of potentially useful chunks. That is useful, but it does not mean the best chunk is ranked first. That is where reranking helps.
 
 ### What reranking does
 
-A reranker takes the user's query and a list of candidate chunks, then scores each chunk for relevance.
+A reranker takes the user’s query and a list of candidate chunks, then scores each chunk for relevance.
 
 The important difference is that the reranker looks at the query and chunk together. A normal embedding search compares two vectors that were created independently. A cross-encoder reranker usually reads the query and candidate text in the same model pass, so it can judge the match more directly.
 
 For example, the first-stage retriever may return 50 chunks that are broadly related to refunds. Some mention cancellation. Some mention failed payments. Some mention refund timelines. Some contain the exact eligibility rule the user needs.
 
-The reranker's job is to reorder those 50 chunks so that the eligibility rule rises to the top.
+The reranker’s job is to reorder those 50 chunks so that the eligibility rule rises to the top.
 
 Typical flow:
 
-1. Use a ANN or hybrid retrieval to retrieve top-30 or top-50 candidates quickly
+1. Use an ANN or hybrid retrieval to retrieve top-30 or top-50 candidates quickly.
 2. Rerank those top 30 or 50 candidates with a reranker
-3. Then send the top-3 or top-5 reranked chunks to the generator
+3. Then send the top-3 or top-5 reranked chunks to the generator.
 
 This gives you broad recall first, then precision.
 
@@ -450,7 +450,7 @@ The reranker can catch subtler matches:
 
 - the query asks about eligibility, but the candidate chunk talks about qualifying conditions
 - two chunks mention the same policy, but only one contains the actual exception
-- many chunks are semantically related, but only one answers the user's specific question
+- many chunks are semantically related, but only one answers the user’s specific question
 - hybrid search retrieves both dense and sparse matches, but the merged order is noisy
 
 In these cases, reranking can make the final context much cleaner.
@@ -467,21 +467,21 @@ The cost also grows with the number of candidates you rerank. Reranking top-10 i
 
 ## Stage 6: Generation — Where RAG Quietly Fails
 
-Retrieval gets evidence into the prompt. Generation turns that evidence into user-facing claims. This final last part is what all the previous stages of this pipeline worked towards.
+Retrieval gets evidence into the prompt. Generation turns that evidence into user-facing claims. This final part is what all the previous stages of this pipeline worked towards.
 
 The retriever may find the right chunks. The reranker may put them near the top. The prompt may contain enough information to answer. And the model can still produce an answer that is too broad, too confident, missing a caveat, or not actually supported by the context. The job at this stage is to make the model use the retrieved context faithfully.
 
 ### Context ordering matters
 
-The first question is simple, did the model see the best evidence in a place where it can use it?
+The first question is simple - did the model see the best evidence in a place where it can use it?
 
-Even though LLMs are constantly improving, they are still vulnerable to "lost in the middle". They tend to use information near the beginning and end of the context window more reliably than information buried in the middle. If you retrieve ten chunks and put the most relevant one at position seven, you are making the model's job harder for no reason.
+Even though LLMs are constantly improving, they are still vulnerable to “lost in the middle”. They tend to use information near the beginning and end of the context window more reliably than information buried in the middle. If you retrieve ten chunks and put the most relevant one at position seven, you are making the model’s job harder for no reason.
 
-So context assembly matters. Put the most relevant chunks first. Keep related chunks together. Do not mix unrelated evidence just because it fit under the token limit. If a parent-document section is needed to understand a chunk, include the surrounding section rather than forcing the model to infer missing context.
+So context assembly matters. Put the most relevant chunks first. Keep related chunks together. Do not mix unrelated evidence just because it fits under the token limit. If a parent-document section is needed to understand a chunk, include the surrounding section rather than forcing the model to infer missing context.
 
 This is a small implementation detail with real impact. Bad context ordering can make good retrieval look worse than it is.
 
-### Grounding instructions are cheap and useful
+### Grounding instructions are cheap and useful.
 
 The second question is whether the model is constrained to the evidence.
 
@@ -498,7 +498,7 @@ Do not assume the model will naturally stay inside the retrieved context. Tell i
 
 This is one of the cheapest faithfulness improvements available. It costs no extra retrieval step and no new infrastructure.
 
-The important part is abstention behavior. A RAG system should be allowed to say "I don't know" when the retrieved context is insufficient. If every query must produce a confident answer, the system will eventually invent one.
+The important part is abstention behaviour. A RAG system should be allowed to say “I don’t know” when the retrieved context is insufficient. If every query must produce a confident answer, the system will eventually invent one.
 
 This matters most in domains where partial correctness is dangerous: medical, legal, finance, compliance, HR policy, safety workflows, and customer support answers that create obligations.
 
@@ -506,7 +506,7 @@ This matters most in domains where partial correctness is dangerous: medical, le
 
 Faithfulness and citations checks are how you keep tabs on generation quality after launch.
 
-Citations shows which chunk, section, page, or document the model used for a claim. It makes answers auditable and without that, you cannot easily tell whether retrieval, reranking, prompting, or source quality caused the failure.
+Citations show which chunk, section, page, or document the model used for a claim. It makes answers auditable, and without that, you cannot easily tell whether retrieval, reranking, prompting, or source quality caused the failure.
 
 Good citations should point as close as possible to the evidence: source chunk, section, page, paragraph, or table. Citations that only point to a giant PDF or a generic document are better than nothing, but they are much less useful.
 
@@ -522,7 +522,7 @@ If the product is high-stakes, you may run faithfulness checks before showing th
 
 ## Stage 7: Evaluation — The Thing You Will Skip and Regret
 
-Evaluation is not really an isolated stage honestly. It is attached to every stage in a way which helps us debug and decide about how to best build or tweak the RAG pipeline.
+Evaluation is not really an isolated stage, honestly. It is attached to every stage in a way which helps us debug and decide how to best build or tweak the RAG pipeline.
 
 Till this stage, you had a lot of knobs to turn. You could change chunk size, switch embeddings, add hybrid search, tune the vector index, add reranking, rewrite queries, or change the generation prompt. Without evaluation, all of those changes remain unverified. The system may sound better on three hand-picked examples and still get worse for the actual query distribution.
 
@@ -590,11 +590,11 @@ Each example should answer three things:
 
 Then make it part of CI or your deployment process. A regression in Recall@k should block deployment just like a failing unit test.
 
-Although this is time consuming, it pays for itself the first time it catches a retrieval regression before users do.
+Although this is time-consuming, it pays for itself the first time it catches a retrieval regression before users do.
 
 ### Offline vs online evaluation
 
-I think of these two as pre and post production signals. Offline eval tells you whether known cases work, typically checked before shipping. Online eval tells you whether real users are getting value. Online eval is where you discover new failure modes, confusing queries, missing documents, and user expectations your golden set did not cover.
+I think of these two as pre and post-production signals. Offline eval tells you whether known cases work, typically checked before shipping. Online eval tells you whether real users are getting value. Online eval is where you discover new failure modes, confusing queries, missing documents, and user expectations your golden set did not cover.
 
 Useful signals:
 
@@ -610,7 +610,7 @@ When available, online feedback closes the loop between lab quality and producti
 
 Here is the practical sequence I typically follow.
 
-First, build a small golden set before optimizing the pipeline. Even 50 examples are enough to stop obvious regressions.
+First, build a small golden set before optimising the pipeline. Even 50 examples are enough to stop obvious regressions.
 
 Second, separate retrieval eval from generation eval. If the right context is missing, fix retrieval. If the right context is present and the answer is still bad, fix generation.
 
@@ -618,15 +618,19 @@ Third, track Recall@k first. If the right evidence does not appear in the candid
 
 Fourth, add ranking metrics once recall is decent. If the correct chunk appears in top-50 but not top-5, reranking and ranking changes are worth testing.
 
-Fifth, add faithfulness and answer-quality checks for the generated response. This catches cases where retrieval worked but the model overreached.
+Fifth, add faithfulness and answer-quality checks for the generated response. This catches cases where retrieval worked, but the model overreached.
 
 Finally, keep adding production failures back into the eval set. Every embarrassing failure should become a test case so you do not rediscover it later.
 
 ---
 
-## The “Don’t Embarrass Yourself in Production” RAG Stack
+## Final thoughts
 
-These are guidelines to think about and build on, to minimize the risk of something going wrong in production:
+Now that you have the understanding of all the stages of the RAG pipeline, let me leave you with some final thoughts and cheatsheets.
+
+### The “Don’t Embarrass Yourself in Production” RAG Stack
+
+These are guidelines to think about and build on to minimise the risk of something going wrong in production:
 
 | Stage | Default choice |
 |---|---|
@@ -654,7 +658,7 @@ They are the settings that give you a working, measurable system you can improve
 Before you call your RAG system production-ready, ask:
 
 - [ ] Do you have at least 50 golden eval queries?
-- [ ] Are correct source chunks labeled for those queries?
+- [ ] Are correct source chunks labelled for those queries?
 - [ ] Have you tested chunk sizes against actual queries?
 - [ ] Are embedding model versions tracked?
 - [ ] Can you re-embed and migrate safely?
@@ -667,4 +671,4 @@ Before you call your RAG system production-ready, ask:
 - [ ] Are answers cited?
 - [ ] Do you monitor online feedback after launch?
 
-If you cannot answer these, your system may still be a demo and not production ready.
+If you cannot answer these, your system may still be a demo and not production-ready.
