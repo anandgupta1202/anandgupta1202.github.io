@@ -33,7 +33,7 @@ const { Content } = await render(entry);
   <Header />
   <main id="main-content" class="page narrow reading-panel" tabindex="-1">
     <article>
-      <header class="article-header" data-reveal="hero">
+      <header class="article-header">
         <p class="meta-line">
           <time datetime={entry.data.pubDate.toISOString()}>{formatFullDate(entry.data.pubDate)}</time>
           <span aria-hidden="true"> / </span>
@@ -64,7 +64,7 @@ const { Content } = await render(entry);
           )
         }
       </header>
-      <div class="prose" data-reveal>
+      <div class="prose">
         <Content />
       </div>
     </article>
